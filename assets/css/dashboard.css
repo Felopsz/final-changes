@@ -1,0 +1,824 @@
+/* ==========================================================================
+   Telemix CSS — dashboard.css (Seções, Tabelas, Projetos, TV Mode)
+   ========================================================================== */
+
+/**
+ * Escopo
+ * ------
+ * - Componentes específicos da dashboard (tables, carrossel, detalhes)
+ * - Layouts de páginas (Chamados, Projetos, Finalizados/Arquivados)
+ * - Modo TV (colapsa sidebar e expande conteúdo)
+ *
+ * Notas de Arquitetura
+ * --------------------
+ * - Botões usam a base de base.css; aqui só variantes/fino quando necessário.
+ * - Mantemos a responsividade por media queries e por classes de página
+ *   adicionadas pelo JS (e.g., .tickets-page). (ref: app.js)
+ */
+
+/* DASHBOARD específicos */
+
+/* Seções e títulos */
+.section{
+  background:#10141c; border:1px solid var(--card-border);
+  border-radius:14px; padding:14px; display:flex; flex-direction:column; gap: var(--space-3);
+}
+.section h2{
+  font-size:14px; color:var(--muted); font-weight:600; letter-spacing:.3px;
+  display:flex; align-items:center; justify-content:space-between;
+  margin:0;               /* evita espaço exagerado */
+  line-height:1;          /* header mais compacto */
+}
+
+/* Chamados (overview) */
+.tickets{ grid-column: span 7; }
+.table-wrap{
+  max-height: clamp(220px, 40vh, 440px);
+  overflow:auto; overscroll-behavior: contain;
+  width:100%;
+}
+/* scrollbar custom da tabela (overview e tickets) */
+.table-wrap{ scrollbar-width: thin; scrollbar-color: rgba(122,162,255,.5) rgba(255,255,255,.06); }
+.table-wrap::-webkit-scrollbar{ width:10px }
+.table-wrap::-webkit-scrollbar-track{ background: rgba(255,255,255,.06); border-radius: var(--radius-md) }
+.table-wrap::-webkit-scrollbar-thumb{
+  background: linear-gradient(180deg, var(--brand), var(--brand-strong));
+  border-radius: var(--radius-md); border:2px solid rgba(255,255,255,.06)
+}
+
+.table{ width:100%; border-collapse: collapse; font-size:14px; table-layout: fixed }
+.table thead th{ text-align:left; font-weight:600; color:var(--muted); padding: var(--space-2) 8px; border-bottom:1px solid var(--card-border) }
+.table tbody td{ padding: var(--space-2) 8px; border-bottom:1px solid rgba(255,255,255,.06); vertical-align:top }
+.table tbody tr{ cursor:pointer; transition: background var(--transition), box-shadow var(--transition) }
+.table tbody tr:hover{ background:#0f131a }
+.table tbody tr.selected{ background:#151a24; box-shadow: inset 0 0 0 1px rgba(122,162,255,.35) }
+.table tbody tr:last-child td{ border-bottom:none }
+
+/* em telas pequenas permita rolagem horizontal da tabela */
+@media (max-width: 600px){
+  .table-wrap{ overflow-x:auto; }
+  .table{ min-width:600px; }
+}
+
+.prog{ display:grid; gap:6px }
+.prog .nums{ display:flex; gap: var(--space-2); font-size: var(--font-xs); color:#cbd5e1 }
+.nums b{ color:#fff }
+.progress{ height:8px; background:#0f131a; border:1px solid var(--card-border); border-radius:8px; overflow:hidden }
+.progress > i{ display:block; height:100%; background: linear-gradient(180deg, var(--brand), var(--brand-strong)); width:0% }
+.prog.overdue .nums{ color:#f87171 }
+.prog.overdue .nums b{ color:#f87171 }
+.prog.overdue .progress{ border-color:#f87171 }
+.prog.overdue .progress > i{ background: linear-gradient(180deg, #f87171, #ef4444) }
+.overdue{ color:#f87171 }
+
+/* Gráficos (overview) */
+.charts{ grid-column: span 5; }
+
+@media (max-width: 900px){
+  #sectionCharts{ display:flex; }
+}
+.chart{ background:#0f131a; border:1px dashed rgba(255,255,255,.12); border-radius: var(--radius-lg); padding: var(--space-2) }
+.chart h3{ font-size: var(--font-sm); color:var(--muted); margin-bottom: var(--space-2) }
+.svg-wrap{ width:100%; height:140px }
+.legend{ display:flex; gap:8px; align-items:center; color:var(--muted); font-size: var(--font-xs) }
+.legend .dot{ width:10px; height:10px; border-radius:999px; background:linear-gradient(180deg, var(--brand), var(--brand-strong)) }
+
+/* Projetos */
+.projects{ grid-column: span 12; position:relative }
+.projects header.actions{ display:flex; align-items:center; justify-content:space-between }
+.proj-actions{ display:flex; gap:8px }
+.carousel{ display:flex; gap: var(--space-3); overflow:auto; scroll-snap-type: x mandatory; padding: 2px 4px; }
+.carousel{ scrollbar-width: thin; scrollbar-color: rgba(122,162,255,.5) rgba(255,255,255,.06) }
+.carousel::-webkit-scrollbar{ height:10px }
+.carousel::-webkit-scrollbar-track{ background: rgba(255,255,255,.06); border-radius: var(--radius-md) }
+.carousel::-webkit-scrollbar-thumb{
+  background: linear-gradient(180deg, var(--brand), var(--brand-strong));
+  border-radius: var(--radius-md); border:2px solid rgba(255,255,255,.06)
+}
+.project{
+  flex: 0 0 320px; scroll-snap-align: start; background:#0f131a;
+  border:1px solid var(--card-border); border-radius: var(--radius-lg); padding: var(--space-3); display:grid; gap:8px
+}
+.project .meta{ display:flex; gap: var(--space-2); flex-wrap:wrap; color:var(--muted); font-size: var(--font-xs) }
+.project .pbar{ height:8px; background:#0b0f16; border:1px solid var(--card-border); border-radius:8px; overflow:hidden }
+.project .pbar > i{ display:block; height:100%; background: linear-gradient(180deg, var(--brand), var(--brand-strong)); width:40% }
+
+.caro-btn{ background:#12161e; border:1px solid var(--card-border); height:32px; padding:0 10px; border-radius: var(--radius-md); cursor:pointer; display:grid; place-items:center; transition: all var(--transition) }
+.caro-btn:hover{ border-color: rgba(122,162,255,.45) }
+.caro-btn.disabled{ opacity:.4; pointer-events:none }
+
+/* Overlay de projeto (mantido) */
+.project-detail{ position: fixed; inset: 0; display:none; align-items:center; justify-content:center; padding:20px; }
+.project-detail .overlay{ position:absolute; inset:0; background: rgba(0,0,0,.5); backdrop-filter: blur(6px) }
+.project-detail .panel{ position:relative; z-index:1; width:min(96vw, 900px); background: #10141c; border:1px solid var(--card-border); border-radius:16px; box-shadow: var(--shadow); padding:18px; display:grid; gap: var(--space-3) }
+.project-detail header{ display:flex; justify-content:space-between; align-items:center }
+.close{ background:transparent; border:1px solid var(--card-border); color:var(--text); padding:6px 10px; border-radius: var(--radius-md); cursor:pointer }
+
+/* Link bonito pro ID */
+.linklike{
+  background: transparent; border: 0; color: var(--brand);
+  text-decoration: underline; cursor: pointer; padding: 0; font: inherit;
+}
+
+/* Detalhes inline de chamado e projeto */
+.ticket-detail,
+.project-detail-inline{
+  background:#0f131a; border:1px solid var(--card-border);
+  border-radius: var(--radius-lg); padding: var(--space-3);
+  display:grid;
+  grid-template-rows:auto auto auto 1fr;
+  gap:8px;
+  min-height:0;
+}
+
+.ticket-detail{ margin-top:0 !important; }
+.project-detail-inline{ margin-top: var(--space-2); }
+
+/* subtabs genéricas */
+.ticket-detail .subtab-panel,
+.project-detail-inline .subtab-panel{
+  min-height:0;
+  height:100%;
+  overflow:auto;
+}
+
+.ticket-detail .subtabs,
+.project-detail-inline .subtabs{
+  display:flex;
+  gap:8px;
+  border-bottom:1px solid var(--card-border);
+  padding-bottom:0;
+}
+
+.ticket-detail .subtabs .subtab,
+.project-detail-inline .subtabs .subtab{
+  background:transparent;
+  border:1px solid var(--card-border);
+  border-bottom:0;
+  padding:8px 12px;
+  border-top-left-radius:10px;
+  border-top-right-radius:10px;
+  cursor:pointer;
+  color:var(--text);
+}
+
+.ticket-detail .subtabs .subtab.active,
+.project-detail-inline .subtabs .subtab.active{
+  box-shadow: 0 -2px 0 var(--brand) inset;
+  border-color: rgba(122,162,255,.6);
+}
+
+/* ===== Tickets page layout ===== */
+/* Faz a seção de Chamados usar a largura total nessa aba */
+.tickets-page .tickets{ grid-column: span 12; }
+
+/* ===== Fix robusto para a aba Chamados ===== */
+/* 1) A content vira flex para deixar a seção de chamados ocupar tudo sem brigar com grid */
+.tickets-page .content{
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  overflow: hidden;      /* impede overflow vertical */
+  min-height: 0;         /* ESSENCIAL para os filhos poderem rolar */
+}
+
+/* === Ajuste fino: seção Chamados com linhas explícitas === */
+/* 3 linhas: título (auto), lista (1fr), detalhes (2fr)  */
+.tickets-page #sectionTickets{
+  display: grid;
+  grid-template-rows: auto 1fr 2fr;
+  grid-template-areas:
+    "title"
+    "list"
+    "detail";
+  gap: 8px;
+  flex: 1;
+  min-height: 0;
+}
+
+/* garante que cada coisa fique na linha certa */
+.tickets-page #sectionTickets > h2{ grid-area: title; margin:0; padding:0; line-height:1.1; }
+.tickets-page #sectionTickets .table-wrap{ grid-area: list; min-height:0; overflow:auto; height:100%; max-height:none; width:100%; }
+.tickets-page #sectionTickets .ticket-detail{
+  grid-area: detail;
+  min-height:0;
+  overflow:auto;
+  margin-top: var(--space-2);
+  border-top:1px solid var(--card-border);
+  padding-top:8px;
+  overflow-x:hidden;
+}
+
+/* largura total na aba Chamados */
+.tickets-page .tickets{ grid-column: 1 / -1; }
+
+/* === Painel de detalhes com altura estável === */
+/* grade interna: header (auto), meta (auto), tabs (auto), painel (1fr) */
+/* --- Painel de detalhes com altura estável (SEM forçar display) --- */
+/* --- Visibilidade controlada por página --- */
+/* Esconde por padrão (inclusive vence inline style por causa do !important) */
+#sectionTickets .ticket-detail{ display:none !important; }
+
+/* Mostra só quando estiver na aba Chamados */
+.tickets-page #sectionTickets .ticket-detail{ display:grid !important; }
+
+/* === Detalhe: Descrição mais legível === */
+#tdDesc{
+  padding-top: 6px;
+}
+
+.td-desc{
+  background: #0b0f16;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  display: grid;
+  gap: var(--space-2);
+  white-space: pre-wrap;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.td-desc h4{
+  margin: 2px 0 4px;
+  font-size: var(--font-sm);
+  color: var(--muted);
+  letter-spacing: .2px;
+}
+
+.td-desc p{ margin:0; }
+.td-desc ul, .td-desc ol{ margin-left:18px; display:grid; gap:4px; }
+.td-desc .divider{
+  height:1px; background:var(--card-border);
+  margin:2px 0;
+}
+
+/* ===== Finished Projects page layout ===== */
+/* deixa a página 100% alta e a seção rolar por dentro */
+.finished-projects-page .content{
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* a seção ocupa o resto do painel e não corta conteúdo */
+.finished-projects-page #sectionFinishedProjects{
+  display: flex;      /* vira um container vertical */
+  flex: 1;            /* preenche a altura */
+  min-height: 0;      /* permite overflow interno */
+  overflow: hidden;   /* quem rola é a .table-wrap */
+  grid-column: 1 / -1;
+}
+
+/* tabela rola sem “cortar” nada */
+.finished-projects-page #sectionFinishedProjects .table-wrap{
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+  max-height: none;   /* remove teto que podia cortar */
+}
+
+/* em mobile, manter rolagem horizontal se precisar */
+@media (max-width: 600px){
+  .finished-projects-page #sectionFinishedProjects .table{
+    min-width: 600px;
+  }
+}
+
+/* Topo da dashboard */
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.top-actions .btn + .btn{ margin-left:6px; }
+
+/* Layout em tela cheia (modo TV) */
+body.tv-mode .sidebar {
+  display: none;
+}
+body.tv-mode .top {
+  justify-content: space-between;
+}
+body.tv-mode #dashboardContent {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+}
+body.tv-mode .section {
+  flex: 1;
+}
+body.tv-mode .content.panel {
+  padding: 0;
+  height: calc(100vh - 50px); /* ajusta altura menos o topo */
+  overflow: hidden;
+}
+body.tv-mode .section {
+  border-radius: 0;
+  border: none;
+}
+/* ===== TV MODE: colapsa a grid, remove limites e expande 100% ===== */
+body.tv-mode .sidebar{ display:none !important; }
+
+/* a grade que contém sidebar + topo + content deve virar 1 coluna */
+  body.tv-mode .app{
+    grid-template-columns: 1fr !important;  /* mata a coluna da sidebar */
+    column-gap: 0 !important;
+    width: 100%;
+    height: 100vh;
+    max-width: none;
+  }
+
+/* topo ocupa largura total e "cola" no topo */
+  body.tv-mode .top.panel{
+    border-radius: 0;
+    margin: 0;
+    max-width: none;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 5;
+  }
+
+/* conteúdo ocupa o resto da altura da tela */
+  body.tv-mode .content.panel{
+    max-width: none;
+    width: 100%;
+    padding: 16px;
+    border-radius: 0;
+    height: calc(100vh - 64px); /* ajustado via JS também p/ ficar perfeito */
+    overflow: auto;
+    box-shadow: none;
+    border: none;
+  }
+
+/* opcional: as sections ficam “flush” na TV */
+body.tv-mode .section{
+  border-radius: 8px;
+}
+/* ===== MODO TV ===== */
+.tv-mode .sidebar{ display:none !important; }
+
+/* Faz a grade principal virar 1 coluna (sem sidebar) */
+.tv-mode .app{
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr;
+  gap: var(--space-3);
+}
+
+/* Topo fica normal, content ocupa toda altura visível e rola */
+.tv-mode .content.panel{
+  height: calc(100vh - 64px); /* 64px ~ altura do header/top; ajuste se o seu topo for diferente */
+  overflow: auto;
+  padding: var(--space-3);
+}
+
+/* Evita overflow lateral de qualquer seção no modo TV */
+.tv-mode .content.panel .section{
+  overflow: visible;
+  max-width: 100%;
+}
+
+/* Tabela no modo TV: coluna Resumo com elipse */
+.col-resumo{
+  max-width: 320px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color:#cbd5e1;
+  font-size: var(--font-sm);
+}
+
+/* Projetos ganham mais altura e um bloco extra */
+.tv-mode .projects .project{
+  min-height: 180px;      /* mais alto que o padrão */
+}
+.tv-mode .projects .proj-extra{
+  margin-top: var(--space-2);
+  padding-top: 8px;
+  border-top: 1px dashed rgba(255,255,255,.12);
+  display: grid;
+  gap: 4px;
+  color:#cbd5e1;
+  font-size: var(--font-xs);
+}
+
+/* Em TV, o grid do overview pode respirar mais; a direita não sai da tela */
+.tv-mode .content.panel{
+  overflow-x: hidden;  /* mata qualquer transbordo horizontal */
+}
+
+/* === Botões utilitários (harmonizados) === */
+.btn{ background:#141820; color:var(--text); border:1px solid var(--card-border); padding: var(--space-2) 12px; border-radius: var(--radius-md); cursor:pointer; transition: transform var(--transition), border-color var(--transition), background var(--transition), opacity var(--transition); font-size: var(--font-sm); line-height:1; }
+.btn:hover{ transform: translateY(-1px); border-color: rgba(122,162,255,.45); }
+.btn:disabled{ opacity:.6; cursor:not-allowed; }
+
+.btn-primary{ background: linear-gradient(180deg, var(--brand), var(--brand-strong)); border-color: transparent; color:#fff; font-weight:600; }
+.btn-outline{ background:#12161e; border:1px solid var(--card-border); color:var(--text); }
+.btn-ghost{ background: transparent; border:1px dashed rgba(255,255,255,.18); color:#cbd5e1; }
+.btn-danger{ background:#161218; border:1px solid rgba(255,69,58,.45); color:#fecaca; }
+.btn-danger:hover{ border-color: rgba(255,69,58,.7); }
+
+.btn-sm{ padding:6px 10px; font-size: var(--font-xs); border-radius:8px; }
+
+.actions-cell{
+  display:flex;
+  align-items:center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+/* compatibilidade com nomes antigos */
+.edit-btn{ composes: btn btn-outline btn-sm; }
+.del-btn{ composes: btn btn-danger btn-sm; }
+
+/* Formulário de edição de chamado */
+.edit-form{ display:grid; gap:8px; max-width:420px; }
+.edit-form .field{ display:flex; flex-direction:column; gap:4px; font-size: var(--font-xs); }
+.edit-form input, .edit-form textarea{
+  background:#0f131a;
+  border:1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  color:var(--text);
+  padding:8px;
+}
+.edit-form textarea{ min-height:80px; resize:vertical; }
+.edit-form .actions{ display:flex; gap:8px; margin-top: var(--space-2); }
+
+/* Ajuste de larguras no modo TV */
+.tv-mode .tickets{ grid-column: span 5; }
+.tv-mode .charts{ grid-column: span 7; }
+
+/* Quando sair do modo TV, não deixa "fantasma" de alturas */
+.content.panel{ min-height: 0; } /* garante que filhos possam rolar */
+
+/* ----- Tickets como cartões no mobile ----- */
+@media (max-width: 600px){
+  #ticketsWrap{ overflow-x:hidden; }
+  #ticketsTable{ min-width:100%; }
+  #ticketsTable thead{ display:none }
+  #ticketsTable, #ticketsTable tbody, #ticketsTable tr, #ticketsTable td{ display:block; width:100% }
+  #ticketsTable tr{ background:#0f131a; border:1px solid var(--card-border); border-radius: var(--radius-md); padding:8px; margin-bottom:8px }
+  #ticketsTable td{ border:none; padding:4px 0; font-size: var(--font-sm) }
+  #ticketsTable td::before{ content:attr(data-label); font-weight:600; color:var(--muted); display:block; margin-bottom:4px; }
+  #ticketsTable td .prog{ width:100% }
+  #ticketsTable td .progress{ width:100%; }
+}
+/* Criar chamado ocupa a largura toda */
+#sectionCreateTicket{ grid-column: 1 / -1; }
+
+/* Grid do form (desktop) */
+#sectionCreateTicket .edit-form,
+#sectionCreateProject .edit-form{
+  max-width: none;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(260px, 1fr));
+  gap: var(--space-3);
+}
+
+/* Inputs sempre com largura visível */
+#sectionCreateTicket .edit-form input,
+#sectionCreateTicket .edit-form textarea,
+#sectionCreateProject .edit-form input,
+#sectionCreateProject .edit-form textarea{
+  width: 100%;
+  display: block;
+  border-color: rgba(255,255,255,.18); /* um pouco mais visível */
+}
+
+/* Botões no fim ocupando a linha inteira */
+#sectionCreateTicket .edit-form .actions,
+#sectionCreateProject .edit-form .actions{
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 8px;
+}
+
+@media (max-width: 900px){
+  #sectionCreateTicket .edit-form,
+  #sectionCreateProject .edit-form{
+    grid-template-columns: 1fr;
+  }
+}
+/* === Criar/Editar: layout premium === */
+#sectionCreateTicket,
+#sectionCreateProject{ grid-column: 1 / -1; }
+
+.edit-form{
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: var(--space-3);
+  max-width: none; /* remove 420px antigo */
+}
+
+/* cada field vira um cardzinho leve */
+.edit-form .field{
+  grid-column: span 6;            /* 2 colunas no desktop */
+  background: #0f131a;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-2);
+  display: grid;
+  gap: 6px;
+}
+
+.edit-form .field.full{ grid-column: 1 / -1; }   /* span total */
+.edit-form label{
+  color: var(--muted);
+  font-size: var(--font-xs);
+}
+
+.edit-form input,
+.edit-form textarea{
+  width: 100%;
+  background: #0b0f16;
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: var(--radius-md);
+  color: var(--text);
+  padding: var(--space-2) 12px;
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+/* foco bonito, igual vibe do login */
+.edit-form input:focus,
+.edit-form textarea:focus{
+  border-color: rgba(122,162,255,.55);
+  box-shadow: 0 0 0 4px rgba(122,162,255,.12);
+}
+
+/* barra de ações */
+.edit-form .actions{
+  grid-column: 1 / -1;
+  display: flex;
+  gap: var(--space-2);
+  margin-top: 2px;
+}
+
+/* botões usando a base do login (.btn / .btn-primary) */
+.edit-form .btn{ background: #141820; }
+.edit-form .btn:hover{ transform: translateY(-1px); border-color: rgba(122,162,255,.45); }
+
+/* mobile: 1 coluna */
+@media (max-width: 900px){
+  .edit-form .field{ grid-column: 1 / -1; }
+}
+/* === Scrollbar custom no content e em telas de administração === */
+.content.panel,
+#sectionCreateTicket,
+#sectionCreateTicket .edit-form,
+#sectionCreateProject,
+#sectionCreateProject .edit-form {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(122,162,255,.5) rgba(255,255,255,.06);
+}
+.content.panel::-webkit-scrollbar,
+#sectionCreateTicket::-webkit-scrollbar,
+#sectionCreateTicket .edit-form::-webkit-scrollbar,
+#sectionCreateProject::-webkit-scrollbar,
+#sectionCreateProject .edit-form::-webkit-scrollbar{
+  width: 10px;
+}
+.content.panel::-webkit-scrollbar-track,
+#sectionCreateTicket::-webkit-scrollbar-track,
+#sectionCreateTicket .edit-form::-webkit-scrollbar-track,
+#sectionCreateProject::-webkit-scrollbar-track,
+#sectionCreateProject .edit-form::-webkit-scrollbar-track{
+  background: rgba(255,255,255,.06);
+  border-radius: var(--radius-md);
+}
+.content.panel::-webkit-scrollbar-thumb,
+#sectionCreateTicket::-webkit-scrollbar-thumb,
+#sectionCreateTicket .edit-form::-webkit-scrollbar-thumb,
+#sectionCreateProject::-webkit-scrollbar-thumb,
+#sectionCreateProject .edit-form::-webkit-scrollbar-thumb{
+  background: linear-gradient(180deg, var(--brand), var(--brand-strong));
+  border-radius: var(--radius-md);
+  border: 2px solid rgba(255,255,255,.06);
+}
+
+/* ====== CREATE PAGES: faz a seção preencher o painel ====== */
+.create-page .content{
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  overflow: hidden;
+  min-height: 0;
+}
+
+/* as seções de criação ocupam todo o espaço disponível */
+.create-page #sectionCreateTicket,
+.create-page #sectionCreateProject{
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* o formulário rola por dentro do bloco #10141c */
+.create-page #sectionCreateTicket .edit-form,
+.create-page #sectionCreateProject .edit-form{
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* garante que filhos possam rolar (você já tem, mas reforço) */
+.content.panel{ min-height: 0; }
+
+
+
+/* Harden mobile scrolling em áreas profundas */
+.content.panel { min-height: 0; }
+
+/* ==== PATCH v2 (mobile): charts compactos ==== */
+@media (max-width: 700px){
+  .charts{ grid-column: 1 / -1; }
+  #sectionCharts{ display: grid; grid-template-columns: 1fr; gap: 8px; overflow: hidden; }
+  #sectionCharts .chart{ padding: 8px; }
+  .svg-wrap{ height: 96px; }
+  .legend{ flex-wrap: wrap; row-gap: 4px; }
+}
+
+/* Tickets ocupando 100% da largura no mobile */
+@media (max-width: 900px){
+  .tickets{ grid-column: 1 / -1; }
+}
+
+/* === FIX: Espaçamento e grid estáveis na aba Chamados === */
+.tickets-page #sectionTickets{ gap: var(--space-3); } /* mesmo respiro da visão geral */
+
+/* Garante divisão visual entre lista e detalhes */
+.tickets-page .tickets + .ticket-detail{
+  margin-top:12px !important;
+  border-top:1px solid var(--card-border);
+  padding-top:8px;
+}
+
+/* Mobile/tablet: alturas seguras para evitar "layout quebrado" */
+@media (max-width: 900px){
+  .tickets-page #sectionTickets{
+    grid-template-rows: auto minmax(180px, 42vh) minmax(220px, 1fr);
+  }
+  .tickets-page #sectionTickets .table-wrap{ max-height:42vh; }
+  .tickets-page #sectionTickets .ticket-detail{ max-height: calc(100vh - 260px); }
+}
+@media (max-width: 560px){
+  .tickets-page #sectionTickets{
+    grid-template-rows: auto minmax(160px, 40vh) minmax(220px, 1fr);
+  }
+}
+
+/* === FIX: Abas com scroll horizontal, sem “barrinha”/indicador visível === */
+.ticket-detail .subtabs,
+.project-detail-inline .subtabs{
+  overflow-x: auto;
+  overflow-y: hidden;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+  -ms-overflow-style: none; /* IE/Edge */
+  scrollbar-width: none;     /* Firefox */
+}
+.ticket-detail .subtabs::-webkit-scrollbar,
+.project-detail-inline .subtabs::-webkit-scrollbar{ display:none; height:0; }
+.ticket-detail .subtabs::after,
+.project-detail-inline .subtabs::after{ content:none !important; display:none !important; }
+
+
+
+/* ==========================================================================
+   Refactor Fase 1 — Componentes extraídos de inline styles (tickets)
+   --------------------------------------------------------------------------
+   Move estilos inline do template para classes reutilizáveis.
+   ========================================================================== */
+
+.ticket-detail.panel{
+  background: #0f131a;
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+/* Header do detalhe do chamado */
+.td-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom: var(--space-2);
+}
+.td-header__meta{
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+
+/* Subtabs genéricas (tickets/projetos) */
+.subtabs{
+  display:flex;
+  gap:8px;
+  border-bottom:1px solid var(--card-border);
+  margin-top:10px;
+}
+.subtab{
+  background:transparent;
+  border:1px solid var(--card-border);
+  border-bottom:0;
+  padding:8px 12px;
+  border-top-left-radius:10px;
+  border-top-right-radius:10px;
+  cursor:pointer;
+  color:var(--text);
+}
+.subtab.active{
+  border-color: rgba(122,162,255,.6);
+  box-shadow: 0 -2px 0 rgba(122,162,255,.35) inset;
+}
+
+/* Painéis das subtabs */
+.subtab-panel{ padding-top:10px; }
+
+
+
+/* ==========================================================================
+   Refactor Fase 3 — Classes para remover inline de templates/ui
+   ========================================================================== */
+
+/* Linhas de metadados (tickets e projetos) */
+.meta-row{
+  display:flex;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  color: var(--muted);
+  font-size: var(--font-sm);
+}
+
+/* Textareas padrão de editores/observações */
+.editor-textarea{
+  width:100%;
+  min-height:120px;
+  background:#0f131a;
+  border:1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  color: var(--text);
+  padding: var(--space-3);
+}
+
+/* Pequeno espaçamento acima de barras ou painéis */
+.mt-1{ margin-top: var(--space-1); }
+.mt-2{ margin-top: var(--space-2); }
+.mt-3{ margin-top: var(--space-3); }
+
+/* Barra de progresso padrão em detalhes/projetos inline */
+.pbar{ height:8px; background:#0b0f16; border:1px solid var(--card-border); border-radius:8px; overflow:hidden }
+.pbar > i{ display:block; height:100%; background: linear-gradient(180deg, var(--brand), var(--brand-strong)); width:40% }
+
+
+
+/* ==========================================================================
+   Refactor Fase 4 — Componentização leve + utilitários
+   ========================================================================== */
+
+/* Tickets summary block */
+.tickets-summary{}
+
+/* Utilitários de espaçamento mínimos */
+.mb-3{ margin-bottom: var(--space-3); }
+.ml-3{ margin-left: var(--space-3); }
+
+/* Listas em grade compacta */
+.list-grid{ display:grid; gap: var(--space-2); }
+
+
+
+/* ==========================================================================
+   Projects layout (desktop 2 cols, mobile 1 col)
+   ========================================================================== */
+.section.projects{
+  display:grid;
+  grid-template-columns: 5fr 7fr;
+  gap: var(--space-3);
+  align-items:start;
+  min-height:0;
+}
+.section.projects #projectsCarousel{ grid-column: 1; }
+.section.projects #projectDetailsInline{ grid-column: 2; min-height:0; }
+.section.projects #projectDetailsInline .project-detail-inline{ min-height:0; }
+@media (max-width: 900px){
+  .section.projects{ grid-template-columns: 1fr; }
+  .section.projects #projectsCarousel,
+  .section.projects #projectDetailsInline{ grid-column: 1; }
+}
