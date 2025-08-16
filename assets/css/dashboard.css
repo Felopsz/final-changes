@@ -805,20 +805,43 @@ body.tv-mode .section{
 
 
 /* ==========================================================================
-   Projects layout (desktop 2 cols, mobile 1 col)
+   Projects layout
+   - Overview: single column (carousel full width)
+   - Projects tab (desktop): carousel + inline details (2 cols)
+   - Mobile: single column
    ========================================================================== */
+
+/* Default: overview / other tabs */
 .section.projects{
   display:grid;
-  grid-template-columns: 5fr 7fr;
+  grid-template-columns: 1fr;
   gap: var(--space-3);
   align-items:start;
   min-height:0;
 }
-.section.projects #projectsCarousel{ grid-column: 1; }
-.section.projects #projectDetailsInline{ grid-column: 2; min-height:0; }
+.section.projects #projectsCarousel{ grid-column:1; }
+.section.projects #projectDetailsInline{
+  grid-column:1;
+  min-height:0;
+  display:none;
+}
 .section.projects #projectDetailsInline .project-detail-inline{ min-height:0; }
+
+/* Projects tab (desktop): show carousel + details side by side */
+.projects-page .section.projects{
+  grid-template-columns: 5fr 7fr;
+}
+.projects-page .section.projects #projectDetailsInline{
+  grid-column:2;
+  display:block;
+}
+
+/* Mobile: always single column */
 @media (max-width: 900px){
-  .section.projects{ grid-template-columns: 1fr; }
+  .section.projects{ grid-template-columns:1fr; }
+  .projects-page .section.projects{ grid-template-columns:1fr; }
   .section.projects #projectsCarousel,
-  .section.projects #projectDetailsInline{ grid-column: 1; }
+  .section.projects #projectDetailsInline{
+    grid-column:1;
+  }
 }
