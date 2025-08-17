@@ -148,7 +148,7 @@
 .ticket-detail,
 .project-detail-inline{
   display:grid;
-  grid-template-rows:auto auto auto 1fr;
+  grid-template-rows:auto auto auto auto 1fr;
   gap:8px;
   min-height:0;
 }

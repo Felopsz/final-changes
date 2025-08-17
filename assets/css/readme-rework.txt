@@ -17,3 +17,4 @@ Reactivated desktop Projects UI:
 - Gráficos da visão geral agora têm altura máxima com barra de rolagem para telas estreitas.
 - O bloco de detalhes de projetos ganhou rolagem própria e abas espaçadas de forma uniforme.
 - Botões das subtabs de detalhes de projetos agora têm largura fixa, igual aos da aba Chamados, evitando que fiquem gigantes.
+- Corrigido o grid dos detalhes de projeto para que a linha de subtabs use altura automática, impedindo que os botões fiquem gigantes.
