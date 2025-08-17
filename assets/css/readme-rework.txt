@@ -16,3 +16,4 @@ Reactivated desktop Projects UI:
 - Seção de gráficos da visão geral reorganizada para evitar vazamento em resoluções entre 700 px e 900 px.
 - Gráficos da visão geral agora têm altura máxima com barra de rolagem para telas estreitas.
 - O bloco de detalhes de projetos ganhou rolagem própria e abas espaçadas de forma uniforme.
+- Botões das subtabs de detalhes de projetos agora têm largura fixa, igual aos da aba Chamados, evitando que fiquem gigantes.

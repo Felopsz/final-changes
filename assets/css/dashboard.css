@@ -197,8 +197,7 @@
 }
 
 .project-detail-inline .subtabs .subtab{
-  flex:1 1 auto;
-  text-align:center;
+  flex:0 0 auto;
 }
 
 .ticket-detail .subtabs .subtab.active,
