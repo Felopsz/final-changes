@@ -73,6 +73,7 @@ const tpl = {
           <!-- CHAMADOS -->
           <section class="section tickets" id="sectionTickets">
             <h2>Chamados</h2>
+            <div class="carousel" id="ticketsCarousel"></div>
             <div class="table-wrap" id="ticketsWrap">
               <table class="table" id="ticketsTable">
                 <thead>

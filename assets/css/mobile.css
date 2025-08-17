@@ -167,12 +167,8 @@ body.is-mobile{ padding-bottom:0; }
   overflow:hidden;
 }
 
-/* Esconde as seções de projetos na aba específica quando em telas móveis */
-.is-mobile.projects-page #sectionProjects,
-.is-mobile.projects-page #sectionProjectDetail{ display:none; }
-
-/* Projects carousel: cards adapt to viewport width */
-.is-mobile #sectionProjects .project{
+/* Carrosséis ocupam largura total no mobile */
+.is-mobile .carousel .project{
   flex:0 0 100%;
   max-width:100%;
   scroll-snap-align:start;
@@ -183,11 +179,10 @@ body.is-mobile{ padding-bottom:0; }
 .is-mobile.tickets-page #sectionTickets{ display: block; }
 .is-mobile.tickets-page #ticketsWrap,
 .is-mobile.tickets-page #ticketsTable,
-.is-mobile.tickets-page .table-wrap,
-.is-mobile.tickets-page .ticket-detail{
-  display: none;
-}
-.is-mobile.tickets-page #sectionTicketDetail{ display:none; }
+.is-mobile.tickets-page .table-wrap{ display:none; }
+.is-mobile.tickets-page #ticketsCarousel{ display:flex; }
+.is-mobile.tickets-page #sectionTicketDetail,
+.is-mobile.tickets-page .ticket-detail{ display:block; }
 
 
 /* Exceção: permitir que o resumo de chamados apareça no mobile */

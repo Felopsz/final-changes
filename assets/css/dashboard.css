@@ -32,6 +32,7 @@
 
 /* Chamados (overview) */
 .tickets{ grid-column: span 7; }
+#ticketsCarousel{ display:none; }
 .table-wrap{
   max-height: clamp(220px, 40vh, 440px);
   overflow:auto; overscroll-behavior: contain;
@@ -832,5 +833,5 @@ body.tv-mode .section{
 
 /* Mobile: mantém layout em coluna única e esconde detalhes */
 @media (max-width: 900px){
-  .projects-page #sectionProjectDetail{ display:none; }
+  /* detalhes de projeto permanecem visíveis no mobile */
 }

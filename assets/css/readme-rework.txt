@@ -18,3 +18,7 @@ Reactivated desktop Projects UI:
 - O bloco de detalhes de projetos ganhou rolagem própria e abas espaçadas de forma uniforme.
 - Botões das subtabs de detalhes de projetos agora têm largura fixa, igual aos da aba Chamados, evitando que fiquem gigantes.
 - Corrigido o grid dos detalhes de projeto para que a linha de subtabs use altura automática, impedindo que os botões fiquem gigantes.
+
+### Versão mobile iniciada
+- A aba Chamados ganhou carrossel próprio em telas móveis, exibindo cartões de chamados no topo e detalhes abaixo.
+- A aba Projetos passou a ser renderizada também no mobile, com carrossel e bloco de detalhes separados como no desktop.

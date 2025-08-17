@@ -35,6 +35,7 @@
       tabProjects: qs('#tabProjects'),
       tabConfig: qs('#tabConfig'),
       ticketsTableBody: qs('#ticketsTable tbody'),
+      ticketsCarousel: qs('#ticketsCarousel'),
       chartSLA: qs('#chartSLA'),
       projectsCarousel: qs('#projectsCarousel'),
       caroPrev: qs('#caroPrev'),
@@ -149,7 +150,15 @@
           els.tabTickets?.classList.add('active');
           if (els.sectionPill) els.sectionPill.textContent = 'Chamados';
           show('#sectionTickets');
-          hide('#sectionTicketDetail');
+          this.renderTickets();
+          if (APP.state.IS_MOBILE){
+            show('#sectionTicketDetail');
+            const first = DB.state.tickets[0];
+            const card = els.ticketsCarousel?.children[0];
+            if(first && card) this.openTicketDetail(first, card);
+          } else {
+            hide('#sectionTicketDetail');
+          }
           return;
         }
 
@@ -157,11 +166,14 @@
           els.tabProjects?.classList.add('active');
           if (els.sectionPill) els.sectionPill.textContent = 'Projetos';
           clearTicketDetail(els);
-          if (APP.state.IS_MOBILE) return; // no mobile mantém vazia
           show('#sectionProjects');
           show('#sectionProjectDetail');
           this.renderProjects();
-          if (DB.state.projects[0]) this.openProjectDetailInline(DB.state.projects[0]);
+          if (DB.state.projects[0]){
+            const card = els.projectsCarousel?.children[0];
+            if(card) card.classList.add('selected');
+            this.openProjectDetailInline(DB.state.projects[0]);
+          }
           return;
         }
       },
@@ -188,6 +200,27 @@
       },
 
       renderTickets(){
+        if(APP.state.IS_MOBILE){
+          if(els.ticketsCarousel){
+            els.ticketsCarousel.innerHTML = '';
+            DB.state.tickets.forEach(t=>{
+              const card = document.createElement('article');
+              card.className = 'project';
+              card.innerHTML = `
+                <header class="td-header">
+                  <strong>${t.id}</strong>
+                  <span class="badge">${t.concl}%</span>
+                </header>
+                <p class="proj-desc">${t.resumo || ''}</p>
+              `;
+              card.addEventListener('click', ()=> UI.openTicketDetail(t, card));
+              els.ticketsCarousel.appendChild(card);
+            });
+            enableSwipeScroll(els.ticketsCarousel);
+          }
+          return;
+        }
+
         els.ticketsTableBody.innerHTML = '';
 
         // Cabeçalho dinâmico (Resumo só no modo TV)
@@ -292,6 +325,7 @@
           });
           els.projectsCarousel.appendChild(el);
         });
+        enableSwipeScroll(els.projectsCarousel);
         UI.updateProjectArrows();
       },
 
@@ -678,8 +712,11 @@
 
       openTicketDetail(t, rowEl){
         this.selectTicket(t, rowEl);
-        this.setActiveTab('tickets');
-        show('#sectionTicketDetail');
+        if(!document.body.classList.contains('tickets-page')){
+          this.setActiveTab('tickets');
+        } else {
+          show('#sectionTicketDetail');
+        }
 
         const pctPrazo = computeDeadlinePct(t.createdAt, t.dueDate);
         const overdue = pctPrazo > 100;
