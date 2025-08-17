@@ -73,10 +73,21 @@
 
 /* Gráficos (overview) */
 .charts{ grid-column: span 5; }
-#sectionCharts{ overflow:hidden; }
+#sectionCharts{
+  max-height: clamp(260px, 45vh, 480px);
+  overflow:auto;
+  overscroll-behavior: contain;
+}
+#sectionCharts{ scrollbar-width: thin; scrollbar-color: rgba(122,162,255,.5) rgba(255,255,255,.06) }
+#sectionCharts::-webkit-scrollbar{ width:10px }
+#sectionCharts::-webkit-scrollbar-track{ background: rgba(255,255,255,.06); border-radius: var(--radius-md) }
+#sectionCharts::-webkit-scrollbar-thumb{
+  background: linear-gradient(180deg, var(--brand), var(--brand-strong));
+  border-radius: var(--radius-md); border:2px solid rgba(255,255,255,.06)
+}
 
 @media (max-width: 900px){
-  #sectionCharts{ display:grid; grid-template-columns:1fr; gap:8px; overflow:hidden; }
+  #sectionCharts{ display:grid; grid-template-columns:1fr; gap:8px; overflow:auto; }
 }
 .chart{ background:#0f131a; border:1px dashed rgba(255,255,255,.12); border-radius: var(--radius-lg); padding: var(--space-2); overflow:hidden; }
 .chart h3{ font-size: var(--font-sm); color:var(--muted); margin-bottom: var(--space-2) }
@@ -107,6 +118,19 @@
 .caro-btn{ background:#12161e; border:1px solid var(--card-border); height:32px; padding:0 10px; border-radius: var(--radius-md); cursor:pointer; display:grid; place-items:center; transition: all var(--transition) }
 .caro-btn:hover{ border-color: rgba(122,162,255,.45) }
 .caro-btn.disabled{ opacity:.4; pointer-events:none }
+
+#sectionProjectDetail{
+  max-height: clamp(280px, 50vh, 560px);
+  overflow:auto;
+  overscroll-behavior: contain;
+}
+#sectionProjectDetail{ scrollbar-width: thin; scrollbar-color: rgba(122,162,255,.5) rgba(255,255,255,.06) }
+#sectionProjectDetail::-webkit-scrollbar{ width:10px }
+#sectionProjectDetail::-webkit-scrollbar-track{ background: rgba(255,255,255,.06); border-radius: var(--radius-md) }
+#sectionProjectDetail::-webkit-scrollbar-thumb{
+  background: linear-gradient(180deg, var(--brand), var(--brand-strong));
+  border-radius: var(--radius-md); border:2px solid rgba(255,255,255,.06)
+}
 
 /* Overlay de projeto (mantido) */
 .project-detail{ position: fixed; inset: 0; display:none; align-items:center; justify-content:center; padding:20px; }
@@ -166,6 +190,15 @@
   border-top-right-radius:10px;
   cursor:pointer;
   color:var(--text);
+}
+
+.project-detail-inline .subtabs{
+  flex-wrap:wrap;
+}
+
+.project-detail-inline .subtabs .subtab{
+  flex:1 1 auto;
+  text-align:center;
 }
 
 .ticket-detail .subtabs .subtab.active,
