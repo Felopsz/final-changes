@@ -141,7 +141,10 @@
   height:100%;
   overflow:auto;
 }
-.project-detail-inline .subtab-panel{ min-height:0; }
+.project-detail-inline .subtab-panel{
+  min-height:0;
+  overflow:auto;
+}
 
 .ticket-detail .subtabs,
 .project-detail-inline .subtabs{
@@ -170,81 +173,58 @@
 }
 
 /* ===== Tickets page layout ===== */
-/* Faz a seção de Chamados usar a largura total nessa aba */
-.tickets-page .tickets{ grid-column: span 12; }
-
-/* ===== Fix robusto para a aba Chamados ===== */
-/* 1) A content vira flex para deixar a seção de chamados ocupar tudo sem brigar com grid */
+/* Seções independentes para lista e detalhes */
 .tickets-page .content{
-  display: flex;
-  flex-direction: column;
+  display:flex;
+  flex-direction:column;
   gap: var(--space-3);
-  overflow: hidden;      /* impede overflow vertical */
-  min-height: 0;         /* ESSENCIAL para os filhos poderem rolar */
-}
-
-/* === Ajuste fino: seção Chamados com linhas explícitas === */
-/* 3 linhas: título (auto), lista (1fr), detalhes (2fr)  */
-.tickets-page #sectionTickets{
-  display: grid;
-  grid-template-rows: auto 1fr 2fr;
-  grid-template-areas:
-    "title"
-    "list"
-    "detail";
-  gap: 8px;
-  flex: 1;
-  min-height: 0;
-}
-
-/* garante que cada coisa fique na linha certa */
-.tickets-page #sectionTickets > h2{ grid-area: title; margin:0; padding:0; line-height:1.1; }
-.tickets-page #sectionTickets .table-wrap{ grid-area: list; min-height:0; overflow:auto; height:100%; max-height:none; width:100%; }
-.tickets-page #sectionTickets .ticket-detail{
-  grid-area: detail;
+  overflow:hidden;
   min-height:0;
-  overflow:auto;
-  margin-top: var(--space-2);
-  border-top:1px solid var(--card-border);
-  padding-top:8px;
-  overflow-x:hidden;
 }
 
-/* largura total na aba Chamados */
-.tickets-page .tickets{ grid-column: 1 / -1; }
+.tickets-page #sectionTickets{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  min-height:0;
+}
 
-/* === Painel de detalhes com altura estável === */
-/* grade interna: header (auto), meta (auto), tabs (auto), painel (1fr) */
-/* --- Painel de detalhes com altura estável (SEM forçar display) --- */
-/* --- Visibilidade controlada por página --- */
-/* Esconde por padrão (inclusive vence inline style por causa do !important) */
-#sectionTickets .ticket-detail{ display:none !important; }
+.tickets-page #sectionTickets .table-wrap{
+  flex:1;
+  overflow:auto;
+  max-height:none;
+}
 
-/* Mostra só quando estiver na aba Chamados */
-.tickets-page #sectionTickets .ticket-detail{ display:grid !important; }
+.tickets-page #sectionTicketDetail{
+  flex:1;
+  min-height:0;
+}
+
+.tickets-page #sectionTicketDetail .ticket-detail{
+  height:100%;
+  overflow:auto;
+}
 
 /* === Detalhe: Descrição mais legível === */
-#tdDesc{
-  padding-top: 6px;
-}
+#tdDesc{ padding-top:6px; }
 
 .td-desc{
-  background: #0b0f16;
-  border: 1px solid var(--card-border);
-  border-radius: var(--radius-md);
-  padding: var(--space-3);
-  display: grid;
-  gap: var(--space-2);
-  white-space: pre-wrap;
-  line-height: 1.45;
-  color: var(--text);
+  background:#0b0f16;
+  border:1px solid var(--card-border);
+  border-radius:var(--radius-md);
+  padding:var(--space-3);
+  display:grid;
+  gap:var(--space-2);
+  white-space:pre-wrap;
+  line-height:1.45;
+  color:var(--text);
 }
 
 .td-desc h4{
-  margin: 2px 0 4px;
-  font-size: var(--font-sm);
-  color: var(--muted);
-  letter-spacing: .2px;
+  margin:2px 0 4px;
+  font-size:var(--font-sm);
+  color:var(--muted);
+  letter-spacing:.2px;
 }
 
 .td-desc p{ margin:0; }
@@ -659,30 +639,6 @@ body.tv-mode .section{
   .tickets{ grid-column: 1 / -1; }
 }
 
-/* === FIX: Espaçamento e grid estáveis na aba Chamados === */
-.tickets-page #sectionTickets{ gap: var(--space-3); } /* mesmo respiro da visão geral */
-
-/* Garante divisão visual entre lista e detalhes */
-.tickets-page .tickets + .ticket-detail{
-  margin-top:12px !important;
-  border-top:1px solid var(--card-border);
-  padding-top:8px;
-}
-
-/* Mobile/tablet: alturas seguras para evitar "layout quebrado" */
-@media (max-width: 900px){
-  .tickets-page #sectionTickets{
-    grid-template-rows: auto minmax(180px, 42vh) minmax(220px, 1fr);
-  }
-  .tickets-page #sectionTickets .table-wrap{ max-height:42vh; }
-  .tickets-page #sectionTickets .ticket-detail{ max-height: calc(100vh - 260px); }
-}
-@media (max-width: 560px){
-  .tickets-page #sectionTickets{
-    grid-template-rows: auto minmax(160px, 40vh) minmax(220px, 1fr);
-  }
-}
-
 /* === FIX: Abas com scroll horizontal, sem “barrinha”/indicador visível === */
 .ticket-detail .subtabs,
 .project-detail-inline .subtabs{
@@ -820,8 +776,8 @@ body.tv-mode .section{
 }
 #sectionProjectDetail #projectDetailsInline{
   width:100%;
-  max-height:400px;
-  height:400px;
+  height:min(400px,60vh);
+  max-height:60vh;
   overflow:auto;
 }
 .projects-page #sectionProjectDetail{ display:block; }

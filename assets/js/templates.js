@@ -88,9 +88,11 @@ const tpl = {
                 <tbody></tbody>
               </table>
             </div>
+          </section>
 
-            <!-- Detalhe do chamado + subtabs -->
-            <div class="ticket-detail panel hidden" id="ticketDetail">
+          <!-- Detalhes do chamado -->
+          <section class="section" id="sectionTicketDetail">
+            <div class="ticket-detail panel" id="ticketDetail">
               <header class="td-header">
                 <strong id="tdTitle">Chamado</strong>
                 <div class="td-header__meta">
@@ -107,16 +109,16 @@ const tpl = {
                 <button class="subtab" data-tab="tdEditForm" >Editar</button>
               </div>
               <div class="subtab-panel active" id="tdDesc" ></div>
-              <div class="subtab-panel" id="tdNotes" class="hidden">
+              <div class="subtab-panel" id="tdNotes">
                 <textarea class="editor-textarea" placeholder="Escreva anotações do chamado..."></textarea>
               </div>
-              <div class="subtab-panel" id="tdRDO" class="hidden">
+              <div class="subtab-panel" id="tdRDO">
                 <ul id="tdRDOList" class="list-grid ml-3"></ul>
               </div>
-              <div class="subtab-panel" id="tdObs" class="hidden">
+              <div class="subtab-panel" id="tdObs">
                 <textarea class="editor-textarea" placeholder="Observações gerais..."></textarea>
               </div>
-              <div class="subtab-panel" id="tdEditForm" class="hidden"></div>
+              <div class="subtab-panel" id="tdEditForm"></div>
             </div>
           </section>
 

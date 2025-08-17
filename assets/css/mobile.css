@@ -187,6 +187,7 @@ body.is-mobile{ padding-bottom:0; }
 .is-mobile.tickets-page .ticket-detail{
   display: none;
 }
+.is-mobile.tickets-page #sectionTicketDetail{ display:none; }
 
 
 /* Exceção: permitir que o resumo de chamados apareça no mobile */

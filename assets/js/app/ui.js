@@ -149,6 +149,7 @@
           els.tabTickets?.classList.add('active');
           if (els.sectionPill) els.sectionPill.textContent = 'Chamados';
           show('#sectionTickets');
+          hide('#sectionTicketDetail');
           return;
         }
 
@@ -678,6 +679,7 @@
       openTicketDetail(t, rowEl){
         this.selectTicket(t, rowEl);
         this.setActiveTab('tickets');
+        show('#sectionTicketDetail');
 
         const pctPrazo = computeDeadlinePct(t.createdAt, t.dueDate);
         const overdue = pctPrazo > 100;
@@ -716,7 +718,6 @@
         renderObservacoes(t);
 
         renderTicketNotes(t);
-
 
         const list = DB.state.rdosByTicket[t.id] || [];
         if (els.tdRDOList) els.tdRDOList.innerHTML = list.map(i=>`<li>${i}</li>`).join('') || '<li>Nenhum RDO registrado.</li>';
