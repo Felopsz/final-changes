@@ -32,6 +32,7 @@
       clock: qs('#clock'),
       tabOverview: qs('#tabOverview'),
       tabTickets: qs('#tabTickets'),
+      tabProjects: qs('#tabProjects'),
       tabConfig: qs('#tabConfig'),
       ticketsTableBody: qs('#ticketsTable tbody'),
       chartSLA: qs('#chartSLA'),
@@ -119,15 +120,16 @@
 
     const UI = {
       setActiveTab(which){
-        [els.tabOverview, els.tabTickets].forEach(b=> b?.classList.remove('active'));
+        [els.tabOverview, els.tabTickets, els.tabProjects].forEach(b=> b?.classList.remove('active'));
         hideAllSections();
         setPageState('default');
         adminMenu?.classList.toggle('open', adminMenuOpen);
 
-        document.body.classList.remove('tickets-page');
+        document.body.classList.remove('tickets-page','projects-page');
         if (which === 'tickets')  document.body.classList.add('tickets-page');
+        if (which === 'projects') document.body.classList.add('projects-page');
 
-        if(which !== 'projects' && els.projDetailsInline){
+        if(which !== 'overview' && els.projDetailsInline){
           els.projDetailsInline.innerHTML = '';
         }
 
@@ -136,6 +138,8 @@
           if (els.sectionPill) els.sectionPill.textContent = 'Dashboard';
           show('#sectionTickets');
           show('#sectionCharts');
+          show('#sectionProjects'); // Bloco de projetos só aparece na visão geral
+          this.renderProjects();
 
           clearTicketDetail(els);
           return this._renderOverview();
@@ -149,6 +153,10 @@
         }
 
         if (which === 'projects') {
+          els.tabProjects?.classList.add('active');
+          if (els.sectionPill) els.sectionPill.textContent = 'Projetos';
+          clearTicketDetail(els);
+          // Tab de projetos intencionalmente vazia
           return;
         }
       },
@@ -163,8 +171,12 @@
 
       renderAll(){
         this.renderTickets();
+        this.renderProjects();
         this.renderArchivedTickets();
         this.renderFinishedTickets();
+        this.renderArchivedProjects();
+        this.renderFinishedProjects();
+        this.updateProjectArrows();
         if(!document.body.classList.contains('tickets-page')){
           this._renderOverview();
         }
@@ -232,7 +244,51 @@
         });
       },
 
-      renderProjects(){},
+      // Renderiza o carrossel de projetos apenas na aba Visão geral
+      renderProjects(){
+        if (!els.projectsCarousel) return;
+        els.projectsCarousel.innerHTML = '';
+
+        [...DB.state.projects]
+          .sort((a, b) => parseDateLocal(a.prazo) - parseDateLocal(b.prazo))
+          .forEach(p => {
+          const daysLeft = Math.max(0, Math.ceil((parseDateLocal(p.prazo) - new Date())/86400000));
+          const el = document.createElement('article');
+          el.className = 'project';
+
+          el.innerHTML = `
+            <header class="td-header">
+              <strong>${p.name}</strong>
+              <span class="badge">${p.pct}%</span>
+            </header>
+            <p class="proj-desc">${p.desc}</p>
+            <div class="meta meta-row">
+              <span>Prazo: <b>${parseDateLocal(p.prazo).toLocaleDateString('pt-BR')}</b></span>
+              <span>Dias (estimado): <b>${p.dias}</b></span>
+              <span>Pessoas: <b>${p.pessoas}</b></span>
+              <span>Dias trabalhados: <b>${p.diasTrab}</b></span>
+              <span>Faltam: <b>${daysLeft} dias</b></span>
+            </div>
+            <div class="pbar" aria-label="% de conclusão"><i style="width:${p.pct}%"></i></div>
+
+            ${isTV() ? `
+              <div class="proj-extra">
+                <div><b>Situação:</b> ${p.pct < 50 ? 'Em andamento' : 'Avançado'}</div>
+                <div><b>Próximo marco:</b> Revisão semanal</div>
+                <div><b>Risco:</b> ${p.pct < 30 ? 'Médio' : 'Baixo'}</div>
+              </div>
+            ` : ''}
+          `;
+
+          el.addEventListener('click', ()=> {
+            UI.openProjectDetailInline(p);
+            document.querySelectorAll('#projectsCarousel .project.selected').forEach(el=>el.classList.remove('selected'));
+            el.classList.add('selected');
+          });
+          els.projectsCarousel.appendChild(el);
+        });
+        UI.updateProjectArrows();
+      },
 
       renderArchivedTickets(){
         if(!els.archivedTicketsBody) return;
@@ -1095,6 +1151,7 @@
       }
       closeSidebar();
     });
+    els.tabProjects?.addEventListener('click', ()=>{ UI.setActiveTab('projects'); closeSidebar(); });
     els.tabAdmin?.addEventListener('click', (e)=> {
       e.stopPropagation();
       setPageState('default');
@@ -1165,13 +1222,6 @@
             }
           } else if (tab === 'projects') {
             UI.setActiveTab('projects');
-            const first = DB.state.projects?.[0];
-            if (first){
-              UI.openProjectDetailInline(first);
-              document.querySelectorAll('#projectsCarousel .project.selected').forEach(el=>el.classList.remove('selected'));
-              const firstCard = document.querySelector('#projectsCarousel .project');
-              firstCard?.classList.add('selected');
-            }
           } else if (tab === 'admin') {
             adminMenuOpen = !adminMenuOpen;
             APP.state.adminMenuOpen = adminMenuOpen;

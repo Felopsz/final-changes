@@ -1,5 +1,4 @@
-Removed all project UI rendering:
-- Excluded the Projects tab and related admin menu items from dashboard template.
-- Deleted the Projects section markup (carousel and details) from the dashboard.
-- Stubbed project rendering in `app/ui.js` so no project data is displayed.
-This change ensures the dashboard no longer shows the projects area.
+Restored minimal project UI:
+- Re-added the Projects tab and related admin menu buttons to the sidebar; these views remain empty when selected.
+- Brought back the Projects carousel block under the Overview tab only; the Projects tab no longer shows it.
+- Commented in the JS that project rendering is exclusive to the Overview page.
