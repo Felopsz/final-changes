@@ -814,8 +814,12 @@ body.tv-mode .section{
 
 /* Default: overview / other tabs */
 /* Bloco de detalhes do projeto fica oculto fora da aba Projetos */
-#sectionProjectDetail{ display:none; }
+#sectionProjectDetail{
+  grid-column: span 12;
+  display:none;
+}
 #sectionProjectDetail #projectDetailsInline{
+  width:100%;
   max-height:400px;
   overflow:auto;
 }

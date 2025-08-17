@@ -6,3 +6,4 @@ Reactivated desktop Projects UI:
 - O painel de detalhes possui altura máxima e rolagem interna para evitar vazamento de conteúdo.
 - Na aba Projetos, o carrossel e os detalhes agora são seções independentes, garantindo espaçamento igual aos demais blocos.
 - Removido o antigo estilo de sobreposição que fazia o painel de detalhes cobrir o carrossel.
+- O bloco de detalhes agora ocupa toda a largura da grade para evitar colunas estreitas.
