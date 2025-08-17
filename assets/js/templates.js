@@ -133,7 +133,7 @@ const tpl = {
             </div>
           </section>
 
-          <!-- PROJETOS (somente na visão geral) -->
+          <!-- PROJETOS (visão geral e aba Projetos no desktop) -->
           <section class="section projects" id="sectionProjects">
             <h2>
               <span>Projetos</span>

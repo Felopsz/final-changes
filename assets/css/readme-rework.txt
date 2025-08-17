@@ -1,4 +1,4 @@
-Restored minimal project UI:
-- Re-added the Projects tab and related admin menu buttons to the sidebar; these views remain empty when selected.
-- Brought back the Projects carousel block under the Overview tab only; the Projects tab no longer shows it.
-- Commented in the JS that project rendering is exclusive to the Overview page.
+Reactivated desktop Projects UI:
+- A aba Projetos exibe novamente o carrossel de projetos no topo e um bloco de detalhes logo abaixo quando em telas grandes.
+- Em dispositivos móveis a aba continua vazia graças a uma regra de CSS dedicada.
+- A visão geral mantém o carrossel e o código comenta que a renderização ocorre onde o bloco estiver visível.

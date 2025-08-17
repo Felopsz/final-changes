@@ -167,6 +167,9 @@ body.is-mobile{ padding-bottom:0; }
   overflow:hidden;
 }
 
+/* Esconde a seção de projetos na aba específica quando em telas móveis */
+.is-mobile.projects-page #sectionProjects{ display:none; }
+
 /* Projects carousel: cards adapt to viewport width */
 .is-mobile #sectionProjects .project{
   flex:0 0 100%;

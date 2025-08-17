@@ -138,7 +138,7 @@
           if (els.sectionPill) els.sectionPill.textContent = 'Dashboard';
           show('#sectionTickets');
           show('#sectionCharts');
-          show('#sectionProjects'); // Bloco de projetos só aparece na visão geral
+          show('#sectionProjects'); // Mostra projetos na visão geral
           this.renderProjects();
 
           clearTicketDetail(els);
@@ -156,7 +156,10 @@
           els.tabProjects?.classList.add('active');
           if (els.sectionPill) els.sectionPill.textContent = 'Projetos';
           clearTicketDetail(els);
-          // Tab de projetos intencionalmente vazia
+          if (APP.state.IS_MOBILE) return; // no mobile mantém vazia
+          show('#sectionProjects');
+          this.renderProjects();
+          if (DB.state.projects[0]) this.openProjectDetailInline(DB.state.projects[0]);
           return;
         }
       },
@@ -244,7 +247,7 @@
         });
       },
 
-      // Renderiza o carrossel de projetos apenas na aba Visão geral
+      // Renderiza o carrossel de projetos onde for visível (visão geral e aba Projetos no desktop)
       renderProjects(){
         if (!els.projectsCarousel) return;
         els.projectsCarousel.innerHTML = '';
