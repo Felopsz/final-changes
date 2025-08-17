@@ -133,7 +133,7 @@ const tpl = {
             </div>
           </section>
 
-          <!-- PROJETOS (visão geral e aba Projetos no desktop) -->
+          <!-- PROJETOS (carrossel sempre visível na visão geral) -->
           <section class="section projects" id="sectionProjects">
             <h2>
               <span>Projetos</span>
@@ -143,7 +143,11 @@ const tpl = {
               </span>
             </h2>
             <div class="carousel" id="projectsCarousel"></div>
-            <div class="project-details-inline" id="projectDetailsInline"></div>
+          </section>
+
+          <!-- DETALHES DO PROJETO (exclusivo da aba Projetos) -->
+          <section class="section project-detail" id="sectionProjectDetail">
+            <div id="projectDetailsInline"></div>
           </section>
 
           <!-- ADMIN: criar chamado -->

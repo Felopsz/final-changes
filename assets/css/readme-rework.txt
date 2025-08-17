@@ -4,3 +4,4 @@ Reactivated desktop Projects UI:
 - A visão geral mantém o carrossel e o código comenta que a renderização ocorre onde o bloco estiver visível.
 - Carrossel e bloco de detalhes agora têm caixas distintas com bordas e fundo.
 - O painel de detalhes possui altura máxima e rolagem interna para evitar vazamento de conteúdo.
+- Na aba Projetos, o carrossel e os detalhes agora são seções independentes, garantindo espaçamento igual aos demais blocos.

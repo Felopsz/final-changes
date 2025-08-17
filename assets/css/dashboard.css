@@ -813,48 +813,21 @@ body.tv-mode .section{
    ========================================================================== */
 
 /* Default: overview / other tabs */
-.section.projects{
-  display:grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-3);
-  align-items:start;
-  min-height:0;
-}
-.section.projects #projectsCarousel{
-  grid-column:1;
-  background:#0f131a;
-  border:1px solid var(--card-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-3);
-}
-.section.projects #projectDetailsInline{
-  grid-column:1;
-  min-height:0;
-  display:none;
+/* Bloco de detalhes do projeto fica oculto fora da aba Projetos */
+#sectionProjectDetail{ display:none; }
+#sectionProjectDetail #projectDetailsInline{
   max-height:400px;
   overflow:auto;
-  background:#0f131a;
-  border:1px solid var(--card-border);
-  border-radius: var(--radius-lg);
-  padding: var(--space-3);
 }
-.section.projects #projectDetailsInline .project-detail-inline{ min-height:0; }
+.projects-page #sectionProjectDetail{ display:block; }
+#sectionProjectDetail .project-detail-inline{ min-height:0; }
 
-/* Projects tab (desktop): exibe detalhes abaixo do carrossel */
-.projects-page .section.projects{
-  grid-template-columns:1fr;
-}
-.projects-page .section.projects #projectDetailsInline{
-  grid-column:1;
-  display:block;
+/* Carrossel de projetos em qualquer aba */
+.section.projects #projectsCarousel{
+  /* sem estilos adicionais: usa layout padrão do .section */
 }
 
-/* Mobile: mantém layout em coluna única */
+/* Mobile: mantém layout em coluna única e esconde detalhes */
 @media (max-width: 900px){
-  .section.projects{ grid-template-columns:1fr; }
-  .projects-page .section.projects{ grid-template-columns:1fr; }
-  .section.projects #projectsCarousel,
-  .section.projects #projectDetailsInline{
-    grid-column:1;
-  }
+  .projects-page #sectionProjectDetail{ display:none; }
 }

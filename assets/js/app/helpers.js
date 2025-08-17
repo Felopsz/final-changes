@@ -112,7 +112,7 @@
 
   function hideAllSections(){
     [
-      'sectionTickets','sectionCharts','sectionProjects',
+      'sectionTickets','sectionCharts','sectionProjects','sectionProjectDetail',
       'sectionCreateTicket','sectionCreateProject',
       'sectionArchivedTickets','sectionFinishedTickets',
       'sectionArchivedProjects','sectionFinishedProjects'

@@ -158,6 +158,7 @@
           clearTicketDetail(els);
           if (APP.state.IS_MOBILE) return; // no mobile mantém vazia
           show('#sectionProjects');
+          show('#sectionProjectDetail');
           this.renderProjects();
           if (DB.state.projects[0]) this.openProjectDetailInline(DB.state.projects[0]);
           return;
@@ -999,6 +1000,7 @@
         }
         const rdos = DB.state.rdosByProject[p.id] || [];
         if (!els.projDetailsInline) return;
+        show('#sectionProjectDetail');
         els.projDetailsInline.innerHTML = `
           <div class="project-detail-inline">
             <header class="td-header">
