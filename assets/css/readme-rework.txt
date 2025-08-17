@@ -11,3 +11,6 @@ Reactivated desktop Projects UI:
 - Carrossel e detalhes ganharam alturas fixas (220px e 400px) para impedir variações de tamanho entre abas.
 - Detalhes do projeto agora usam altura responsiva (até 60vh) com rolagem interna para evitar vazamento em resoluções menores.
 - Aba Chamados dividida em dois blocos: lista e detalhes. Painel de detalhes aparece apenas em telas grandes e rola dentro do próprio bloco.
+- Painel de detalhes de projeto passou a usar a classe `panel`, ganhando o mesmo "subbloquinho" com borda e fundo dos chamados.
+- Em Chamados, a lista ocupa cerca de 35% da altura e os detalhes 65%, priorizando a descrição.
+- Seção de gráficos da visão geral reorganizada para evitar vazamento em resoluções entre 700 px e 900 px.

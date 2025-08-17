@@ -1003,7 +1003,7 @@
         if (!els.projDetailsInline) return;
         show('#sectionProjectDetail');
         els.projDetailsInline.innerHTML = `
-          <div class="project-detail-inline">
+          <div class="project-detail-inline panel">
             <header class="td-header">
               <strong>${p.name}</strong>
               <span class="badge">${p.pct}%</span>
