@@ -35,7 +35,6 @@
       tabProjects: qs('#tabProjects'),
       tabConfig: qs('#tabConfig'),
       ticketsTableBody: qs('#ticketsTable tbody'),
-      ticketsCarousel: qs('#ticketsCarousel'),
       chartSLA: qs('#chartSLA'),
       projectsCarousel: qs('#projectsCarousel'),
       caroPrev: qs('#caroPrev'),
@@ -126,11 +125,11 @@
         setPageState('default');
         adminMenu?.classList.toggle('open', adminMenuOpen);
 
-        document.body.classList.remove('tickets-page','projects-page');
-        if (which === 'tickets')  document.body.classList.add('tickets-page');
+        document.body.classList.remove('projects-page','tickets-page','finished-projects-page');
         if (which === 'projects') document.body.classList.add('projects-page');
+        if (which === 'tickets')  document.body.classList.add('tickets-page');
 
-        if(which !== 'overview' && els.projDetailsInline){
+        if(which !== 'projects' && els.projDetailsInline){
           els.projDetailsInline.innerHTML = '';
         }
 
@@ -139,9 +138,7 @@
           if (els.sectionPill) els.sectionPill.textContent = 'Dashboard';
           show('#sectionTickets');
           show('#sectionCharts');
-          show('#sectionProjects'); // Mostra projetos na visão geral
-          this.renderTickets();
-          this.renderProjects();
+          show('#sectionProjects');
 
           clearTicketDetail(els);
           return this._renderOverview();
@@ -151,30 +148,14 @@
           els.tabTickets?.classList.add('active');
           if (els.sectionPill) els.sectionPill.textContent = 'Chamados';
           show('#sectionTickets');
-          this.renderTickets();
-          if (APP.state.IS_MOBILE){
-            show('#sectionTicketDetail');
-            const first = DB.state.tickets[0];
-            const card = els.ticketsCarousel?.children[0];
-            if(first && card) this.openTicketDetail(first, card);
-          } else {
-            hide('#sectionTicketDetail');
-          }
           return;
         }
 
         if (which === 'projects') {
           els.tabProjects?.classList.add('active');
           if (els.sectionPill) els.sectionPill.textContent = 'Projetos';
-          clearTicketDetail(els);
           show('#sectionProjects');
-          show('#sectionProjectDetail');
-          this.renderProjects();
-          if (DB.state.projects[0]){
-            const card = els.projectsCarousel?.children[0];
-            if(card) card.classList.add('selected');
-            this.openProjectDetailInline(DB.state.projects[0]);
-          }
+          clearTicketDetail(els);
           return;
         }
       },
@@ -195,33 +176,12 @@
         this.renderArchivedProjects();
         this.renderFinishedProjects();
         this.updateProjectArrows();
-        if(!document.body.classList.contains('tickets-page')){
+        if(!document.body.classList.contains('tickets-page') && !document.body.classList.contains('projects-page')){
           this._renderOverview();
         }
       },
 
       renderTickets(){
-        if(APP.state.IS_MOBILE){
-          if(els.ticketsCarousel){
-            els.ticketsCarousel.innerHTML = '';
-            DB.state.tickets.forEach(t=>{
-              const card = document.createElement('article');
-              card.className = 'project';
-              card.innerHTML = `
-                <header class="td-header">
-                  <strong>${t.id}</strong>
-                  <span class="badge">${t.concl}%</span>
-                </header>
-                <p class="proj-desc">${t.resumo || ''}</p>
-              `;
-              card.addEventListener('click', ()=> UI.openTicketDetail(t, card));
-              els.ticketsCarousel.appendChild(card);
-            });
-            enableSwipeScroll(els.ticketsCarousel);
-          }
-          return;
-        }
-
         els.ticketsTableBody.innerHTML = '';
 
         // Cabeçalho dinâmico (Resumo só no modo TV)
@@ -283,7 +243,6 @@
         });
       },
 
-      // Renderiza o carrossel de projetos onde for visível (visão geral e aba Projetos no desktop)
       renderProjects(){
         if (!els.projectsCarousel) return;
         els.projectsCarousel.innerHTML = '';
@@ -319,15 +278,16 @@
             ` : ''}
           `;
 
-          el.addEventListener('click', ()=> {
-            UI.openProjectDetailInline(p);
-            document.querySelectorAll('#projectsCarousel .project.selected').forEach(el=>el.classList.remove('selected'));
-            el.classList.add('selected');
-          });
+          el.addEventListener('click', ()=> UI.openProjectDetailInline(p));
           els.projectsCarousel.appendChild(el);
         });
-        enableSwipeScroll(els.projectsCarousel);
-        UI.updateProjectArrows();
+
+        if (document.body.classList.contains('projects-page') && DB.state.projects.length){
+          UI.openProjectDetailInline(DB.state.projects[0]);
+          document.querySelectorAll('#projectsCarousel .project.selected').forEach(el=>el.classList.remove('selected'));
+          const firstCard = els.projectsCarousel.querySelector('.project');
+          firstCard?.classList.add('selected');
+        }
       },
 
       renderArchivedTickets(){
@@ -713,11 +673,7 @@
 
       openTicketDetail(t, rowEl){
         this.selectTicket(t, rowEl);
-        if(!document.body.classList.contains('tickets-page')){
-          this.setActiveTab('tickets');
-        } else {
-          show('#sectionTicketDetail');
-        }
+        this.setActiveTab('tickets');
 
         const pctPrazo = computeDeadlinePct(t.createdAt, t.dueDate);
         const overdue = pctPrazo > 100;
@@ -756,6 +712,7 @@
         renderObservacoes(t);
 
         renderTicketNotes(t);
+
 
         const list = DB.state.rdosByTicket[t.id] || [];
         if (els.tdRDOList) els.tdRDOList.innerHTML = list.map(i=>`<li>${i}</li>`).join('') || '<li>Nenhum RDO registrado.</li>';
@@ -1034,14 +991,11 @@
         setTimeout(()=> UI.updateProjectArrows(), 300);
       },
       openProjectDetailInline(p){
-        if (!document.body.classList.contains('projects-page')) {
-          UI.setActiveTab('projects');
-        }
+        UI.setActiveTab('projects');
         const rdos = DB.state.rdosByProject[p.id] || [];
         if (!els.projDetailsInline) return;
-        show('#sectionProjectDetail');
         els.projDetailsInline.innerHTML = `
-          <div class="project-detail-inline panel">
+          <div class="project-detail-inline">
             <header class="td-header">
               <strong>${p.name}</strong>
               <span class="badge">${p.pct}%</span>
@@ -1060,13 +1014,12 @@
               <button class="subtab" data-tab="pdObs" >Observações</button>
               <button class="subtab" data-tab="pdEditForm" >Editar</button>
             </div>
-            <div class="subtab-panel active" id="pdDesc"><p>${p.desc}</p></div>
-            <div class="subtab-panel hidden" id="pdNotes"><ul id="pdNotesList" class="list-grid ml-3"></ul><div id="pdNoteForm" class="mt-2"><textarea class="editor-textarea" placeholder="Anotações do projeto..." autocomplete="off"></textarea><div class="actions mt-2"><button type="button" class="btn btn-primary" id="pdAddNoteBtn">Adicionar</button></div></div></div>
-            <div class="subtab-panel hidden" id="pdRDO"><ul id="pdRDOList" class="list-grid ml-3">${rdos.map(r=>`<li>${r}</li>`).join('') || '<li>Nenhum RDO registrado.</li>'}</ul></div>
-            <div class="subtab-panel hidden" id="pdObs"></div>
-            <div class="subtab-panel hidden" id="pdEditForm"></div>
+            <div class="subtab-panel active" id="pdDesc" ><p>${p.desc}</p></div>
+            <div class="subtab-panel" id="pdNotes" class="hidden"><ul id="pdNotesList" class="list-grid ml-3"></ul><div id="pdNoteForm" class="mt-2"><textarea class="editor-textarea" placeholder="Anotações do projeto..." autocomplete="off"></textarea><div class="actions" class="mt-2"><button type="button" class="btn btn-primary" id="pdAddNoteBtn">Adicionar</button></div></div></div>
+            <div class="subtab-panel" id="pdRDO" class="hidden"><ul id="pdRDOList" class="list-grid ml-3">${rdos.map(r=>`<li>${r}</li>`).join('') || '<li>Nenhum RDO registrado.</li>'}</ul></div>
+          <div class="subtab-panel" id="pdObs" class="hidden"></div>
+          <div class="subtab-panel" id="pdEditForm" class="hidden"></div>
         </div>`;
-        els.projDetailsInline.scrollTop = 0;
 
         renderProjectNotes(p);
 
@@ -1155,18 +1108,10 @@
           if(!btn) return;
           const tab = btn.dataset.tab;
           qsa('.subtab', detail).forEach(b=>b.classList.remove('active'));
-          qsa('.subtab-panel', detail).forEach(pn=>{
-            pn.classList.remove('active');
-            pn.classList.add('hidden');
-            pn.style.display='none';
-          });
+          qsa('.subtab-panel', detail).forEach(pn=>{ pn.classList.remove('active'); pn.style.display='none'; });
           btn.classList.add('active');
           const panel = detail.querySelector('#'+tab);
-          if(panel){
-            panel.classList.remove('hidden');
-            panel.classList.add('active');
-            panel.style.display='';
-          }
+          if(panel){ panel.classList.add('active'); panel.style.display=''; }
         });
 
         enableSwipeScroll(detail?.querySelector('.subtabs'));
@@ -1204,7 +1149,18 @@
       }
       closeSidebar();
     });
-    els.tabProjects?.addEventListener('click', ()=>{ UI.setActiveTab('projects'); closeSidebar(); });
+    els.tabProjects?.addEventListener('click', ()=> {
+      const first = DB.state.projects?.[0];
+      if (first){
+        UI.openProjectDetailInline(first);
+        document.querySelectorAll('#projectsCarousel .project.selected').forEach(el=>el.classList.remove('selected'));
+        const firstCard = document.querySelector('#projectsCarousel .project');
+        firstCard?.classList.add('selected');
+      } else {
+        UI.setActiveTab('projects');
+      }
+      closeSidebar();
+    });
     els.tabAdmin?.addEventListener('click', (e)=> {
       e.stopPropagation();
       setPageState('default');
@@ -1275,6 +1231,13 @@
             }
           } else if (tab === 'projects') {
             UI.setActiveTab('projects');
+            const first = DB.state.projects?.[0];
+            if (first){
+              UI.openProjectDetailInline(first);
+              document.querySelectorAll('#projectsCarousel .project.selected').forEach(el=>el.classList.remove('selected'));
+              const firstCard = document.querySelector('#projectsCarousel .project');
+              firstCard?.classList.add('selected');
+            }
           } else if (tab === 'admin') {
             adminMenuOpen = !adminMenuOpen;
             APP.state.adminMenuOpen = adminMenuOpen;

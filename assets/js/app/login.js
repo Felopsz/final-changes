@@ -35,14 +35,15 @@
       APP.dashboard.init();
     };
 
-    // Login automático temporário como admin
-    btnLogin?.addEventListener('click', async () => {
-      const res = await fetch('/api/db');
-      const data = await res.json();
-      window.CURRENT_USER = 'admin';
-      window.CURRENT_ROLE = data.users?.admin?.role || 'admin';
-      await DB.load(data);
-      goToDashboard();
+    btnLogin?.addEventListener('click', () => {
+      btnCreate.classList.add('fade-out');
+      btnLogin.classList.add('fade-out');
+      setTimeout(() => {
+        actions.classList.add('hidden');
+        topBar.classList.add('visible');
+        form.classList.add('visible');
+        user.focus();
+      }, 240);
     });
     btnBack?.addEventListener('click', goHome);
     user?.addEventListener('input', enableContinueIfFilled);

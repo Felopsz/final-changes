@@ -73,7 +73,6 @@ const tpl = {
           <!-- CHAMADOS -->
           <section class="section tickets" id="sectionTickets">
             <h2>Chamados</h2>
-            <div class="carousel" id="ticketsCarousel"></div>
             <div class="table-wrap" id="ticketsWrap">
               <table class="table" id="ticketsTable">
                 <thead>
@@ -89,11 +88,9 @@ const tpl = {
                 <tbody></tbody>
               </table>
             </div>
-          </section>
 
-          <!-- Detalhes do chamado -->
-          <section class="section" id="sectionTicketDetail">
-            <div class="ticket-detail panel" id="ticketDetail">
+            <!-- Detalhe do chamado + subtabs -->
+            <div class="ticket-detail panel hidden" id="ticketDetail">
               <header class="td-header">
                 <strong id="tdTitle">Chamado</strong>
                 <div class="td-header__meta">
@@ -110,16 +107,16 @@ const tpl = {
                 <button class="subtab" data-tab="tdEditForm" >Editar</button>
               </div>
               <div class="subtab-panel active" id="tdDesc" ></div>
-              <div class="subtab-panel" id="tdNotes">
+              <div class="subtab-panel" id="tdNotes" class="hidden">
                 <textarea class="editor-textarea" placeholder="Escreva anotações do chamado..."></textarea>
               </div>
-              <div class="subtab-panel" id="tdRDO">
+              <div class="subtab-panel" id="tdRDO" class="hidden">
                 <ul id="tdRDOList" class="list-grid ml-3"></ul>
               </div>
-              <div class="subtab-panel" id="tdObs">
+              <div class="subtab-panel" id="tdObs" class="hidden">
                 <textarea class="editor-textarea" placeholder="Observações gerais..."></textarea>
               </div>
-              <div class="subtab-panel" id="tdEditForm"></div>
+              <div class="subtab-panel" id="tdEditForm" class="hidden"></div>
             </div>
           </section>
 
@@ -136,7 +133,7 @@ const tpl = {
             </div>
           </section>
 
-          <!-- PROJETOS (carrossel sempre visível na visão geral) -->
+          <!-- PROJETOS -->
           <section class="section projects" id="sectionProjects">
             <h2>
               <span>Projetos</span>
@@ -146,13 +143,8 @@ const tpl = {
               </span>
             </h2>
             <div class="carousel" id="projectsCarousel"></div>
+            <div class="project-details-inline" id="projectDetailsInline"></div>
           </section>
-
-          <!-- DETALHES DO PROJETO (exclusivo da aba Projetos) -->
-          <section class="section" id="sectionProjectDetail">
-            <div id="projectDetailsInline"></div>
-          </section>
-
           <!-- ADMIN: criar chamado -->
           <section class="section" id="sectionCreateTicket" class="hidden">
             <h2>Novo chamado</h2>

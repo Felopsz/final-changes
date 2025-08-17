@@ -167,8 +167,8 @@ body.is-mobile{ padding-bottom:0; }
   overflow:hidden;
 }
 
-/* Carrosséis ocupam largura total no mobile */
-.is-mobile .carousel .project{
+/* Projects carousel: cards adapt to viewport width */
+.is-mobile #sectionProjects .project{
   flex:0 0 100%;
   max-width:100%;
   scroll-snap-align:start;
@@ -179,10 +179,10 @@ body.is-mobile{ padding-bottom:0; }
 .is-mobile.tickets-page #sectionTickets{ display: block; }
 .is-mobile.tickets-page #ticketsWrap,
 .is-mobile.tickets-page #ticketsTable,
-.is-mobile.tickets-page .table-wrap{ display:none; }
-.is-mobile.tickets-page #ticketsCarousel{ display:flex; }
-.is-mobile.tickets-page #sectionTicketDetail,
-.is-mobile.tickets-page .ticket-detail{ display:block; }
+.is-mobile.tickets-page .table-wrap,
+.is-mobile.tickets-page .ticket-detail{
+  display: none;
+}
 
 
 /* Exceção: permitir que o resumo de chamados apareça no mobile */
