@@ -39,16 +39,12 @@ const tpl = {
             <button class="navbtn" id="tabOverview">Visão geral</button>
             <button class="navbtn" id="tabTickets">Chamados</button>
             <button class="navbtn" id="tabReports">Relatórios</button>
-            <button class="navbtn" id="tabProjects">Projetos</button>
             <button class="navbtn" id="tabAdmin">Admin</button>
             <div class="admin-subnav" id="adminMenu">
               <button class="navbtn" id="btnAdminCreateTicket">Criar chamado</button>
               <button class="navbtn" id="btnAdminArchivedTickets">Chamados arquivados</button>
               <button class="navbtn" id="btnAdminFinishedTickets">Chamados finalizados</button>
               <button class="navbtn" id="btnAdminHistory">Histórico</button>
-              <button class="navbtn" id="btnAdminCreateProject">Criar projeto</button>
-              <button class="navbtn" id="btnAdminArchivedProjects">Projetos arquivados</button>
-              <button class="navbtn" id="btnAdminFinishedProjects">Projetos finalizados</button>
               <button class="navbtn" id="btnAdminChanges">Alterações</button>
             </div>
             <!-- menu admin-only -->
@@ -133,18 +129,6 @@ const tpl = {
             </div>
           </section>
 
-          <!-- PROJETOS -->
-          <section class="section projects" id="sectionProjects">
-            <h2>
-              <span>Projetos</span>
-              <span class="proj-actions">
-                <button class="caro-btn" id="caroPrev" title="Anterior">◀</button>
-                <button class="caro-btn" id="caroNext" title="Próximo">▶</button>
-              </span>
-            </h2>
-            <div class="carousel" id="projectsCarousel"></div>
-            <div class="project-details-inline" id="projectDetailsInline"></div>
-          </section>
           <!-- ADMIN: criar chamado -->
           <section class="section" id="sectionCreateTicket" class="hidden">
             <h2>Novo chamado</h2>
