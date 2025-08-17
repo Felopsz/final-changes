@@ -140,6 +140,7 @@
           show('#sectionTickets');
           show('#sectionCharts');
           show('#sectionProjects'); // Mostra projetos na visão geral
+          this.renderTickets();
           this.renderProjects();
 
           clearTicketDetail(els);
