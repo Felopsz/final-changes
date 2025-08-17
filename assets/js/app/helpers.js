@@ -7,6 +7,7 @@
     if (els.tdRDOList) els.tdRDOList.innerHTML = '';
     if (els.tdMeta) els.tdMeta.innerHTML = '';
     if (els.tdEditForm) els.tdEditForm.innerHTML = '';
+    hide('#sectionTicketDetail');
   }
 
   // Converte datas "YYYY-MM-DD" para o fim do dia local
@@ -112,7 +113,7 @@
 
   function hideAllSections(){
     [
-      'sectionTickets','sectionCharts','sectionProjects',
+      'sectionTickets','sectionTicketDetail','sectionCharts','sectionProjects','sectionProjectDetail',
       'sectionCreateTicket','sectionCreateProject',
       'sectionArchivedTickets','sectionFinishedTickets',
       'sectionArchivedProjects','sectionFinishedProjects'

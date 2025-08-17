@@ -1,0 +1,20 @@
+Reactivated desktop Projects UI:
+- A aba Projetos exibe novamente o carrossel de projetos no topo e um bloco de detalhes logo abaixo quando em telas grandes.
+- Em dispositivos móveis a aba continua vazia graças a uma regra de CSS dedicada.
+- A visão geral mantém o carrossel e o código comenta que a renderização ocorre onde o bloco estiver visível.
+- Carrossel e bloco de detalhes agora têm caixas distintas com bordas e fundo.
+- O painel de detalhes possui altura máxima e rolagem interna para evitar vazamento de conteúdo.
+- Na aba Projetos, o carrossel e os detalhes agora são seções independentes, garantindo espaçamento igual aos demais blocos.
+- Removido o antigo estilo de sobreposição que fazia o painel de detalhes cobrir o carrossel.
+- O bloco de detalhes agora ocupa toda a largura da grade para evitar colunas estreitas.
+- Corrigidas abas do painel de projetos para não esconder os painéis; inicial oculto é removido ao trocar de aba.
+- Carrossel e detalhes ganharam alturas fixas (220px e 400px) para impedir variações de tamanho entre abas.
+- Detalhes do projeto agora usam altura responsiva (até 60vh) com rolagem interna para evitar vazamento em resoluções menores.
+- Aba Chamados dividida em dois blocos: lista e detalhes. Painel de detalhes aparece apenas em telas grandes e rola dentro do próprio bloco.
+- Painel de detalhes de projeto passou a usar a classe `panel`, ganhando o mesmo "subbloquinho" com borda e fundo dos chamados.
+- Em Chamados, a lista ocupa cerca de 35% da altura e os detalhes 65%, priorizando a descrição.
+- Seção de gráficos da visão geral reorganizada para evitar vazamento em resoluções entre 700 px e 900 px.
+- Gráficos da visão geral agora têm altura máxima com barra de rolagem para telas estreitas.
+- O bloco de detalhes de projetos ganhou rolagem própria e abas espaçadas de forma uniforme.
+- Botões das subtabs de detalhes de projetos agora têm largura fixa, igual aos da aba Chamados, evitando que fiquem gigantes.
+- Corrigido o grid dos detalhes de projeto para que a linha de subtabs use altura automática, impedindo que os botões fiquem gigantes.
