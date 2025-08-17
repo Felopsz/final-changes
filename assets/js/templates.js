@@ -146,7 +146,7 @@ const tpl = {
           </section>
 
           <!-- DETALHES DO PROJETO (exclusivo da aba Projetos) -->
-          <section class="section project-detail" id="sectionProjectDetail">
+          <section class="section" id="sectionProjectDetail">
             <div id="projectDetailsInline"></div>
           </section>
 
