@@ -821,14 +821,19 @@ body.tv-mode .section{
 #sectionProjectDetail #projectDetailsInline{
   width:100%;
   max-height:400px;
+  height:400px;
   overflow:auto;
 }
 .projects-page #sectionProjectDetail{ display:block; }
 #sectionProjectDetail .project-detail-inline{ min-height:0; }
 
-/* Carrossel de projetos em qualquer aba */
+/* Bloco do carrossel mantém altura fixa para evitar "pulos" entre abas */
 .section.projects #projectsCarousel{
-  /* sem estilos adicionais: usa layout padrão do .section */
+  height:220px;
+}
+.section.projects #projectsCarousel .project{
+  height:100%;
+  overflow:auto;
 }
 
 /* Mobile: mantém layout em coluna única e esconde detalhes */

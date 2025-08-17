@@ -1021,11 +1021,11 @@
               <button class="subtab" data-tab="pdObs" >Observações</button>
               <button class="subtab" data-tab="pdEditForm" >Editar</button>
             </div>
-            <div class="subtab-panel active" id="pdDesc" ><p>${p.desc}</p></div>
-            <div class="subtab-panel" id="pdNotes" class="hidden"><ul id="pdNotesList" class="list-grid ml-3"></ul><div id="pdNoteForm" class="mt-2"><textarea class="editor-textarea" placeholder="Anotações do projeto..." autocomplete="off"></textarea><div class="actions" class="mt-2"><button type="button" class="btn btn-primary" id="pdAddNoteBtn">Adicionar</button></div></div></div>
-            <div class="subtab-panel" id="pdRDO" class="hidden"><ul id="pdRDOList" class="list-grid ml-3">${rdos.map(r=>`<li>${r}</li>`).join('') || '<li>Nenhum RDO registrado.</li>'}</ul></div>
-          <div class="subtab-panel" id="pdObs" class="hidden"></div>
-          <div class="subtab-panel" id="pdEditForm" class="hidden"></div>
+            <div class="subtab-panel active" id="pdDesc"><p>${p.desc}</p></div>
+            <div class="subtab-panel hidden" id="pdNotes"><ul id="pdNotesList" class="list-grid ml-3"></ul><div id="pdNoteForm" class="mt-2"><textarea class="editor-textarea" placeholder="Anotações do projeto..." autocomplete="off"></textarea><div class="actions mt-2"><button type="button" class="btn btn-primary" id="pdAddNoteBtn">Adicionar</button></div></div></div>
+            <div class="subtab-panel hidden" id="pdRDO"><ul id="pdRDOList" class="list-grid ml-3">${rdos.map(r=>`<li>${r}</li>`).join('') || '<li>Nenhum RDO registrado.</li>'}</ul></div>
+            <div class="subtab-panel hidden" id="pdObs"></div>
+            <div class="subtab-panel hidden" id="pdEditForm"></div>
         </div>`;
         els.projDetailsInline.scrollTop = 0;
 
@@ -1116,10 +1116,18 @@
           if(!btn) return;
           const tab = btn.dataset.tab;
           qsa('.subtab', detail).forEach(b=>b.classList.remove('active'));
-          qsa('.subtab-panel', detail).forEach(pn=>{ pn.classList.remove('active'); pn.style.display='none'; });
+          qsa('.subtab-panel', detail).forEach(pn=>{
+            pn.classList.remove('active');
+            pn.classList.add('hidden');
+            pn.style.display='none';
+          });
           btn.classList.add('active');
           const panel = detail.querySelector('#'+tab);
-          if(panel){ panel.classList.add('active'); panel.style.display=''; }
+          if(panel){
+            panel.classList.remove('hidden');
+            panel.classList.add('active');
+            panel.style.display='';
+          }
         });
 
         enableSwipeScroll(detail?.querySelector('.subtabs'));
