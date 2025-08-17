@@ -119,28 +119,29 @@
   background: transparent; border: 0; color: var(--brand);
   text-decoration: underline; cursor: pointer; padding: 0; font: inherit;
 }
-
 /* Detalhes inline de chamado e projeto */
 .ticket-detail,
 .project-detail-inline{
-  background:#0f131a; border:1px solid var(--card-border);
-  border-radius: var(--radius-lg); padding: var(--space-3);
   display:grid;
   grid-template-rows:auto auto auto 1fr;
   gap:8px;
   min-height:0;
 }
 
-.ticket-detail{ margin-top:0 !important; }
-.project-detail-inline{ margin-top: var(--space-2); width:100%; }
+.ticket-detail{
+  background:#0f131a; border:1px solid var(--card-border);
+  border-radius: var(--radius-lg); padding: var(--space-3);
+  margin-top:0 !important;
+}
+.project-detail-inline{ width:100%; }
 
 /* subtabs genéricas */
-.ticket-detail .subtab-panel,
-.project-detail-inline .subtab-panel{
+.ticket-detail .subtab-panel{
   min-height:0;
   height:100%;
   overflow:auto;
 }
+.project-detail-inline .subtab-panel{ min-height:0; }
 
 .ticket-detail .subtabs,
 .project-detail-inline .subtabs{
@@ -819,12 +820,23 @@ body.tv-mode .section{
   align-items:start;
   min-height:0;
 }
-.section.projects #projectsCarousel{ grid-column:1; }
+.section.projects #projectsCarousel{
+  grid-column:1;
+  background:#0f131a;
+  border:1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3);
+}
 .section.projects #projectDetailsInline{
   grid-column:1;
   min-height:0;
   display:none;
+  max-height:400px;
   overflow:auto;
+  background:#0f131a;
+  border:1px solid var(--card-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3);
 }
 .section.projects #projectDetailsInline .project-detail-inline{ min-height:0; }
 

@@ -1025,6 +1025,7 @@
           <div class="subtab-panel" id="pdObs" class="hidden"></div>
           <div class="subtab-panel" id="pdEditForm" class="hidden"></div>
         </div>`;
+        els.projDetailsInline.scrollTop = 0;
 
         renderProjectNotes(p);
 
