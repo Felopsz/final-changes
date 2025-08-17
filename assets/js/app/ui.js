@@ -247,6 +247,40 @@
           });
           els.ticketsTableBody.appendChild(tr);
         });
+        if (APP.state.IS_MOBILE) this.renderTicketsSummaryMobile();
+      },
+
+      renderTicketsSummaryMobile(){
+        const block = document.getElementById('ticketsSummaryBlock');
+        if(!block) return;
+        block.innerHTML = '';
+        DB.state.tickets.forEach(t=>{
+          const pctPrazo = computeDeadlinePct(t.createdAt, t.dueDate);
+          const pctPrazoCapped = Math.min(100, Math.round(pctPrazo));
+          const overdue = pctPrazo > 100 ? 'overdue' : '';
+          const card = document.createElement('div');
+          card.className = 'ticket-summary panel mb-3';
+          card.innerHTML = `
+            <header class="td-header">
+              <strong>Chamado ${t.id}</strong>
+              <span class="badge">${t.concl}%</span>
+            </header>
+            <div class="meta-row">
+              <span>Ponto de encontro: <b>${t.meetPoint}</b></span>
+              <span>Dupla: <b>${t.dupla}</b></span>
+            </div>
+            <div class="prog ${overdue}">
+              <div class="nums"><span>Prazo: <b>${Math.round(pctPrazo)}%</b></span></div>
+              <div class="progress ${overdue}"><i style="width:${pctPrazoCapped}%"></i></div>
+            </div>
+          `;
+          card.addEventListener('click', () => {
+            const tr = document.querySelector(`#ticketsTable tbody tr button[data-id="${t.id}"]`)?.closest('tr');
+            this.openTicketDetail(t, tr);
+            this.selectTicket(t, tr);
+          });
+          block.appendChild(card);
+        });
       },
 
       // Renderiza o carrossel de projetos onde for visível (visão geral e aba Projetos no desktop)

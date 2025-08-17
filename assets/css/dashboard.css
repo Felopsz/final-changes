@@ -784,7 +784,8 @@ body.tv-mode .section{
    ========================================================================== */
 
 /* Tickets summary block */
-.tickets-summary{}
+#ticketsSummaryBlock{ display:none; }
+.ticket-summary{}
 
 /* Utilitários de espaçamento mínimos */
 .mb-3{ margin-bottom: var(--space-3); }
