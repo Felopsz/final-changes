@@ -156,7 +156,6 @@
           if (els.sectionPill) els.sectionPill.textContent = 'Projetos';
           show('#sectionProjects');
           clearTicketDetail(els);
-          this.renderProjects();
           return;
         }
       },
@@ -279,11 +278,7 @@
             ` : ''}
           `;
 
-          el.addEventListener('click', ()=> {
-            UI.openProjectDetailInline(p);
-            document.querySelectorAll('#projectsCarousel .project.selected').forEach(el=>el.classList.remove('selected'));
-            el.classList.add('selected');
-          });
+          el.addEventListener('click', ()=> UI.openProjectDetailInline(p));
           els.projectsCarousel.appendChild(el);
         });
 
@@ -996,9 +991,7 @@
         setTimeout(()=> UI.updateProjectArrows(), 300);
       },
       openProjectDetailInline(p){
-        if (!document.body.classList.contains('projects-page')) {
-          UI.setActiveTab('projects');
-        }
+        UI.setActiveTab('projects');
         const rdos = DB.state.rdosByProject[p.id] || [];
         if (!els.projDetailsInline) return;
         els.projDetailsInline.innerHTML = `
@@ -1157,7 +1150,15 @@
       closeSidebar();
     });
     els.tabProjects?.addEventListener('click', ()=> {
-      UI.setActiveTab('projects');
+      const first = DB.state.projects?.[0];
+      if (first){
+        UI.openProjectDetailInline(first);
+        document.querySelectorAll('#projectsCarousel .project.selected').forEach(el=>el.classList.remove('selected'));
+        const firstCard = document.querySelector('#projectsCarousel .project');
+        firstCard?.classList.add('selected');
+      } else {
+        UI.setActiveTab('projects');
+      }
       closeSidebar();
     });
     els.tabAdmin?.addEventListener('click', (e)=> {
