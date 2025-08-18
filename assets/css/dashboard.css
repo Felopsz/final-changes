@@ -784,8 +784,29 @@ body.tv-mode .section{
    ========================================================================== */
 
 /* Tickets summary block */
-#ticketsSummaryBlock{ display:none; }
-.ticket-summary{}
+#ticketsSummaryBlock{
+  display:none;
+  max-height: clamp(220px, 40vh, 440px);
+  overflow:auto;
+  overscroll-behavior: contain;
+}
+#ticketsSummaryBlock{ scrollbar-width: thin; scrollbar-color: rgba(122,162,255,.5) rgba(255,255,255,.06); }
+#ticketsSummaryBlock::-webkit-scrollbar{ width:10px }
+#ticketsSummaryBlock::-webkit-scrollbar-track{ background: rgba(255,255,255,.06); border-radius: var(--radius-md) }
+#ticketsSummaryBlock::-webkit-scrollbar-thumb{
+  background: linear-gradient(180deg, var(--brand), var(--brand-strong));
+  border-radius: var(--radius-md); border:2px solid rgba(255,255,255,.06)
+}
+.ticket-summary{ display:flex; flex-direction:column; }
+.ticket-summary .ts-item{ padding:4px 0; font-size: var(--font-sm); }
+.ticket-summary .ts-item::before{
+  content: attr(data-label);
+  font-weight:600;
+  color: var(--muted);
+  display:block;
+  margin-bottom:4px;
+}
+.ticket-summary .linklike{ display:block; }
 
 /* Utilitários de espaçamento mínimos */
 .mb-3{ margin-bottom: var(--space-3); }

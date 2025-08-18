@@ -255,24 +255,16 @@
         if(!block) return;
         block.innerHTML = '';
         DB.state.tickets.forEach(t=>{
-          const pctPrazo = computeDeadlinePct(t.createdAt, t.dueDate);
-          const pctPrazoCapped = Math.min(100, Math.round(pctPrazo));
-          const overdue = pctPrazo > 100 ? 'overdue' : '';
+          const created = parseDateLocal(t.createdAt).toLocaleString('pt-BR');
           const card = document.createElement('div');
           card.className = 'ticket-summary panel mb-3';
           card.innerHTML = `
-            <header class="td-header">
-              <strong>Chamado ${t.id}</strong>
-              <span class="badge">${t.concl}%</span>
-            </header>
-            <div class="meta-row">
-              <span>Ponto de encontro: <b>${t.meetPoint}</b></span>
-              <span>Dupla: <b>${t.dupla}</b></span>
+            <div class="ts-item" data-label="ID do chamado">
+              <button class="linklike" data-id="${t.id}">${t.id}</button>
             </div>
-            <div class="prog ${overdue}">
-              <div class="nums"><span>Prazo: <b>${Math.round(pctPrazo)}%</b></span></div>
-              <div class="progress ${overdue}"><i style="width:${pctPrazoCapped}%"></i></div>
-            </div>
+            <div class="ts-item" data-label="Data de criação">${created}</div>
+            <div class="ts-item" data-label="Ponto de encontro">${t.meetPoint}</div>
+            <div class="ts-item" data-label="Dupla">${t.dupla}</div>
           `;
           card.addEventListener('click', () => {
             const tr = document.querySelector(`#ticketsTable tbody tr button[data-id="${t.id}"]`)?.closest('tr');
