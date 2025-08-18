@@ -786,12 +786,15 @@ body.tv-mode .section{
 /* Tickets summary block (mobile & overview) */
 #ticketsSummaryBlock{
   display:none;
-  list-style:none;
-  padding:0;
-  margin:0;
   max-height:40vh;           /* rolagem própria */
   overflow-y:auto;
   overflow-x:hidden;
+}
+
+#ticketsSummaryBlock .tickets-summary{
+  list-style:none;
+  padding:0;
+  margin:0;
 }
 
 /* Cartão de resumo individual */

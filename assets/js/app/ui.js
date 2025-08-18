@@ -252,10 +252,11 @@
 
       // -- Tickets summary block (mobile) ------------------------------------
       renderTicketsSummaryMobile(){
-        const block = document.getElementById('ticketsSummaryBlock');
-        if(!block) return;
-        block.innerHTML = '';
-        block.scrollTop = 0; // garante início no topo
+        const wrap = document.getElementById('ticketsSummaryBlock');
+        const list = wrap?.querySelector('.tickets-summary');
+        if(!wrap || !list) return;
+        list.innerHTML = '';
+        wrap.scrollTop = 0; // garante início no topo
         DB.state.tickets.forEach(t=>{
           const created = parseDateLocal(t.createdAt).toLocaleString('pt-BR');
           const card = document.createElement('li');
@@ -273,7 +274,7 @@
             this.openTicketDetail(t, tr);
             this.selectTicket(t, tr);
           });
-          block.appendChild(card);
+          list.appendChild(card);
         });
       },
 
