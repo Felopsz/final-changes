@@ -250,10 +250,12 @@
         if (APP.state.IS_MOBILE) this.renderTicketsSummaryMobile();
       },
 
+      // -- Tickets summary block (mobile) ------------------------------------
       renderTicketsSummaryMobile(){
         const block = document.getElementById('ticketsSummaryBlock');
         if(!block) return;
         block.innerHTML = '';
+        block.scrollTop = 0; // garante início no topo
         DB.state.tickets.forEach(t=>{
           const created = parseDateLocal(t.createdAt).toLocaleString('pt-BR');
           const card = document.createElement('li');
@@ -263,8 +265,8 @@
               <button class="linklike" data-id="${t.id}">${t.id}</button>
             </div>
             <div class="ts-item" data-label="Data de criação">${created}</div>
-            <div class="ts-item" data-label="Ponto de encontro">${t.meetPoint}</div>
-            <div class="ts-item" data-label="Dupla">${t.dupla}</div>
+            <div class="ts-item" data-label="Ponto de encontro">${esc(t.meetPoint)}</div>
+            <div class="ts-item" data-label="Dupla">${esc(t.dupla)}</div>
           `;
           card.addEventListener('click', () => {
             const tr = document.querySelector(`#ticketsTable tbody tr button[data-id="${t.id}"]`)?.closest('tr');
