@@ -190,6 +190,6 @@ body.is-mobile{ padding-bottom:0; }
 .is-mobile.tickets-page #sectionTicketDetail{ display:none; }
 
 
-/* Tickets summary block visível na aba Chamados (mobile) */
-.is-mobile.tickets-page #ticketsSummaryBlock{ display:block; }
-.is-mobile.tickets-page .tickets-summary{ display:block !important; }
+/* Tickets summary block visível em telas móveis */
+.is-mobile #ticketsSummaryBlock{ display:block; }
+.is-mobile .tickets-summary{ display:block !important; }

@@ -253,10 +253,11 @@
       // -- Tickets summary block (mobile) ------------------------------------
       renderTicketsSummaryMobile(){
         const wrap = document.getElementById('ticketsSummaryBlock');
-        const list = wrap?.querySelector('.tickets-summary');
-        if(!wrap || !list) return;
+        const scroller = wrap?.querySelector('.ts-scroll');
+        const list = scroller?.querySelector('.tickets-summary');
+        if(!wrap || !scroller || !list) return;
         list.innerHTML = '';
-        wrap.scrollTop = 0; // garante início no topo
+        scroller.scrollTop = 0; // garante início no topo
         DB.state.tickets.forEach(t=>{
           const created = parseDateLocal(t.createdAt).toLocaleString('pt-BR');
           const card = document.createElement('li');

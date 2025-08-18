@@ -73,8 +73,10 @@ const tpl = {
           <!-- CHAMADOS -->
           <section class="section tickets" id="sectionTickets">
             <h2>Chamados</h2>
-            <div id="ticketsSummaryBlock">
-              <ul class="tickets-summary"></ul>
+            <div id="ticketsSummaryBlock" class="panel">
+              <div class="ts-scroll">
+                <ul class="tickets-summary"></ul>
+              </div>
             </div>
             <div class="table-wrap" id="ticketsWrap">
               <table class="table" id="ticketsTable">

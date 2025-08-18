@@ -784,8 +784,9 @@ body.tv-mode .section{
    ========================================================================== */
 
 /* Tickets summary block (mobile & overview) */
-#ticketsSummaryBlock{
-  display:none;
+#ticketsSummaryBlock{ display:none; }
+
+#ticketsSummaryBlock .ts-scroll{
   max-height:40vh;           /* rolagem própria */
   overflow-y:auto;
   overflow-x:hidden;
