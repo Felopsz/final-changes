@@ -256,7 +256,7 @@
         block.innerHTML = '';
         DB.state.tickets.forEach(t=>{
           const created = parseDateLocal(t.createdAt).toLocaleString('pt-BR');
-          const card = document.createElement('div');
+          const card = document.createElement('li');
           card.className = 'ticket-summary panel mb-3';
           card.innerHTML = `
             <div class="ts-item" data-label="ID do chamado">
