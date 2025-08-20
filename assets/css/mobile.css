@@ -184,9 +184,9 @@ body.is-mobile{ padding-bottom:0; }
   display:block;
   flex:0 0 auto;
 }
-.is-mobile.tickets-page #ticketsWrap,
-.is-mobile.tickets-page #ticketsTable,
-.is-mobile.tickets-page .table-wrap{
+.is-mobile.tickets-page #sectionTickets #ticketsWrap,
+.is-mobile.tickets-page #sectionTickets #ticketsTable,
+.is-mobile.tickets-page #sectionTickets .table-wrap{
   display:none;
 }
 /* Detalhes do chamado visíveis no mobile */

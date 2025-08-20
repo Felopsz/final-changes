@@ -126,7 +126,7 @@
         adminMenu?.classList.toggle('open', adminMenuOpen);
 
         document.body.classList.remove('tickets-page','projects-page');
-        if (which === 'tickets' && !APP.state.IS_MOBILE)  document.body.classList.add('tickets-page');
+        if (which === 'tickets')  document.body.classList.add('tickets-page');
         if (which === 'projects' && !APP.state.IS_MOBILE) document.body.classList.add('projects-page');
 
         if(which !== 'overview' && els.projDetailsInline){
@@ -149,7 +149,11 @@
           els.tabTickets?.classList.add('active');
           if (els.sectionPill) els.sectionPill.textContent = 'Chamados';
           show('#sectionTickets');
-          hide('#sectionTicketDetail');
+          if (APP.state.IS_MOBILE) {
+            show('#sectionTicketDetail');
+          } else {
+            hide('#sectionTicketDetail');
+          }
           return;
         }
 
