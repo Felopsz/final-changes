@@ -180,15 +180,25 @@ body.is-mobile{ padding-bottom:0; }
 
 
 /* Refactor (fallback): manter container visível e esconder apenas partes pesadas */
-.is-mobile.tickets-page #sectionTickets{ display: block; }
+.is-mobile.tickets-page #sectionTickets{
+  display:block;
+  flex:0 0 auto;
+}
 .is-mobile.tickets-page #ticketsWrap,
 .is-mobile.tickets-page #ticketsTable,
 .is-mobile.tickets-page .table-wrap{
-  display: none;
+  display:none;
 }
 /* Detalhes do chamado visíveis no mobile */
-.is-mobile.tickets-page #sectionTicketDetail{ display:block; }
-.is-mobile.tickets-page .ticket-detail{ display:block; }
+.is-mobile.tickets-page #sectionTicketDetail{
+  display:block;
+  flex:0 0 auto;
+}
+.is-mobile.tickets-page #sectionTicketDetail .ticket-detail{
+  display:block;
+  height:auto;
+  overflow:visible;
+}
 
 /* Espaçamento entre lista de chamados e detalhes */
 .is-mobile #sectionTicketDetail{ margin-top:12px; }
