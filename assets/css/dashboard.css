@@ -783,8 +783,35 @@ body.tv-mode .section{
    Refactor Fase 4 — Componentização leve + utilitários
    ========================================================================== */
 
-/* Tickets summary block */
-.tickets-summary{}
+/* Tickets summary block (mobile & overview) */
+#ticketsSummaryBlock{
+  display:none;
+  max-height:40vh;           /* rolagem própria */
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+
+#ticketsSummaryBlock .tickets-summary{
+  list-style:none;
+  padding:0;
+  margin:0;
+}
+
+/* Cartão de resumo individual */
+.ticket-summary{ display:flex; flex-direction:column; }
+.ticket-summary .ts-item{
+  padding:4px 0;
+  font-size: var(--font-sm);
+  overflow-wrap:anywhere;    /* evita vazamento de texto */
+}
+.ticket-summary .ts-item::before{
+  content: attr(data-label);
+  font-weight:600;
+  color: var(--muted);
+  display:block;
+  margin-bottom:4px;
+}
+.ticket-summary .linklike{ display:block; }
 
 /* Utilitários de espaçamento mínimos */
 .mb-3{ margin-bottom: var(--space-3); }
