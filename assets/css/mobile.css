@@ -183,11 +183,15 @@ body.is-mobile{ padding-bottom:0; }
 .is-mobile.tickets-page #sectionTickets{ display: block; }
 .is-mobile.tickets-page #ticketsWrap,
 .is-mobile.tickets-page #ticketsTable,
-.is-mobile.tickets-page .table-wrap,
-.is-mobile.tickets-page .ticket-detail{
+.is-mobile.tickets-page .table-wrap{
   display: none;
 }
-.is-mobile.tickets-page #sectionTicketDetail{ display:none; }
+/* Detalhes do chamado visíveis no mobile */
+.is-mobile.tickets-page #sectionTicketDetail{ display:block; }
+.is-mobile.tickets-page .ticket-detail{ display:block; }
+
+/* Espaçamento entre lista de chamados e detalhes */
+.is-mobile #sectionTicketDetail{ margin-top:12px; }
 
 
 /* Tickets summary block visível na aba Chamados (mobile) */
