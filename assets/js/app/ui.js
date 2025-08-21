@@ -72,21 +72,8 @@
       _subtabsBound: false,
     };
 
-    if (APP.state.IS_MOBILE) {
-      document.getElementById('sectionTickets')?.remove();
-      document.getElementById('sectionTicketDetail')?.remove();
-      document.querySelector('.bottom-nav .bn-btn[data-tab="tickets"]')?.remove();
-      els.tabTickets?.remove();
-      els.tabTickets = null;
-      els.ticketsTableBody = null;
-      els.ticketDetail = null;
-      els.tdTitle = null;
-      els.tdPct = null;
-      els.tdMeta = null;
-      els.tdDesc = null;
-      els.tdRDOList = null;
-      els.tdEditForm = null;
-    }
+    // Mantém os elementos de chamados no mobile para reutilizar a mesma
+    // estrutura da aba "Visão geral" na aba "Chamados".
 
     const adminMenu = els.adminMenu;
     let adminMenuOpen = APP.state.adminMenuOpen;
@@ -162,10 +149,15 @@
         }
 
         if (which === 'tickets') {
-          if (APP.state.IS_MOBILE) return;
           els.tabTickets?.classList.add('active');
           if (els.sectionPill) els.sectionPill.textContent = 'Chamados';
           show('#sectionTickets');
+          if (APP.state.IS_MOBILE) {
+            show('#sectionTicketDetail');
+            hide('#sectionProjects');
+            hide('#sectionCharts');
+            return;
+          }
           hide('#sectionTicketDetail');
           return;
         }
@@ -723,11 +715,14 @@
         if (!APP.state.IS_MOBILE) this.renderSLAChart(t.concl, Math.min(p,100));
       },
 
-      openTicketDetail(t, rowEl){
-        if (APP.state.IS_MOBILE) return;
-        this.selectTicket(t, rowEl);
-        this.setActiveTab('tickets');
-        show('#sectionTicketDetail');
+        openTicketDetail(t, rowEl){
+          this.selectTicket(t, rowEl);
+          this.setActiveTab('tickets');
+          if (APP.state.IS_MOBILE) {
+            document.querySelectorAll('.bottom-nav .bn-btn').forEach(b=>b.classList.remove('active'));
+            document.querySelector('.bottom-nav .bn-btn[data-tab="tickets"]')?.classList.add('active');
+          }
+          show('#sectionTicketDetail');
 
         const pctPrazo = computeDeadlinePct(t.createdAt, t.dueDate);
         const overdue = pctPrazo > 100;
@@ -1266,22 +1261,31 @@
     });
 
     if (APP.state.IS_MOBILE){
-      document.querySelectorAll('.bottom-nav .bn-btn').forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          document.querySelectorAll('.bottom-nav .bn-btn').forEach(b=>b.classList.remove('active'));
-          btn.classList.add('active');
-          const tab = btn.dataset.tab;
-          if (tab === 'overview') {
-            UI.setActiveTab('overview');
-          } else if (tab === 'projects') {
-            UI.setActiveTab('projects');
-          } else if (tab === 'admin') {
-            adminMenuOpen = !adminMenuOpen;
-            APP.state.adminMenuOpen = adminMenuOpen;
-            adminMenu?.classList.toggle('open', adminMenuOpen);
-          }
+        document.querySelectorAll('.bottom-nav .bn-btn').forEach(btn=>{
+          btn.addEventListener('click', ()=>{
+            document.querySelectorAll('.bottom-nav .bn-btn').forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active');
+            const tab = btn.dataset.tab;
+            if (tab === 'overview') {
+              UI.setActiveTab('overview');
+            } else if (tab === 'tickets') {
+              UI.setActiveTab('tickets');
+              const firstTicket = DB.state.tickets?.[0];
+              const firstRow = document.querySelector('#ticketsTable tbody tr');
+              if (firstTicket && firstRow){
+                UI.openTicketDetail(firstTicket, firstRow);
+              } else {
+                document.getElementById('ticketDetail')?.style.display = 'none';
+              }
+            } else if (tab === 'projects') {
+              UI.setActiveTab('projects');
+            } else if (tab === 'admin') {
+              adminMenuOpen = !adminMenuOpen;
+              APP.state.adminMenuOpen = adminMenuOpen;
+              adminMenu?.classList.toggle('open', adminMenuOpen);
+            }
+          });
         });
-      });
     }
 
     // Boot inicial
