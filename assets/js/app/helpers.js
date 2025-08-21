@@ -7,7 +7,7 @@
     if (els.tdRDOList) els.tdRDOList.innerHTML = '';
     if (els.tdMeta) els.tdMeta.innerHTML = '';
     if (els.tdEditForm) els.tdEditForm.innerHTML = '';
-    if (!APP.state.IS_MOBILE) hide('#sectionTicketDetail');
+    hide('#sectionTicketDetail');
   }
 
   // Converte datas "YYYY-MM-DD" para o fim do dia local

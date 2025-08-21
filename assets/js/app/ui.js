@@ -72,6 +72,22 @@
       _subtabsBound: false,
     };
 
+    if (APP.state.IS_MOBILE) {
+      document.getElementById('sectionTickets')?.remove();
+      document.getElementById('sectionTicketDetail')?.remove();
+      document.querySelector('.bottom-nav .bn-btn[data-tab="tickets"]')?.remove();
+      els.tabTickets?.remove();
+      els.tabTickets = null;
+      els.ticketsTableBody = null;
+      els.ticketDetail = null;
+      els.tdTitle = null;
+      els.tdPct = null;
+      els.tdMeta = null;
+      els.tdDesc = null;
+      els.tdRDOList = null;
+      els.tdEditForm = null;
+    }
+
     const adminMenu = els.adminMenu;
     let adminMenuOpen = APP.state.adminMenuOpen;
     adminMenuOpen = adminMenu?.classList.contains('open') || adminMenuOpen;
@@ -126,7 +142,7 @@
         adminMenu?.classList.toggle('open', adminMenuOpen);
 
         document.body.classList.remove('tickets-page','projects-page');
-        if (which === 'tickets')  document.body.classList.add('tickets-page');
+        if (which === 'tickets' && !APP.state.IS_MOBILE)  document.body.classList.add('tickets-page');
         if (which === 'projects' && !APP.state.IS_MOBILE) document.body.classList.add('projects-page');
 
         if(which !== 'overview' && els.projDetailsInline){
@@ -146,14 +162,11 @@
         }
 
         if (which === 'tickets') {
+          if (APP.state.IS_MOBILE) return;
           els.tabTickets?.classList.add('active');
           if (els.sectionPill) els.sectionPill.textContent = 'Chamados';
           show('#sectionTickets');
-          if (APP.state.IS_MOBILE) {
-            show('#sectionTicketDetail');
-          } else {
-            hide('#sectionTicketDetail');
-          }
+          hide('#sectionTicketDetail');
           return;
         }
 
@@ -192,6 +205,7 @@
       },
 
       renderTickets(){
+        if (!els.ticketsTableBody) return;
         els.ticketsTableBody.innerHTML = '';
 
         // Cabeçalho dinâmico (Resumo só no modo TV)
@@ -710,6 +724,7 @@
       },
 
       openTicketDetail(t, rowEl){
+        if (APP.state.IS_MOBILE) return;
         this.selectTicket(t, rowEl);
         this.setActiveTab('tickets');
         show('#sectionTicketDetail');
@@ -1258,16 +1273,6 @@
           const tab = btn.dataset.tab;
           if (tab === 'overview') {
             UI.setActiveTab('overview');
-          } else if (tab === 'tickets') {
-            UI.setActiveTab('tickets');
-            const firstTicket = DB.state.tickets?.[0];
-            const firstRow = document.querySelector('#ticketsTable tbody tr');
-            if (firstTicket && firstRow){
-              UI.openTicketDetail(firstTicket, firstRow);
-            } else {
-              const det = document.getElementById('ticketDetail');
-              if (det) det.style.display = 'none';
-            }
           } else if (tab === 'projects') {
             UI.setActiveTab('projects');
           } else if (tab === 'admin') {
