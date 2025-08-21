@@ -93,8 +93,6 @@ body.is-mobile{ padding-bottom:0; }
   box-shadow: 0 0 0 4px rgba(122,162,255,.12) inset;
 }
 
-/* Tabelas em cartões (reforço do seu CSS responsivo) */
-.is-mobile #ticketsTable tr{ padding: 10px; }
 
 /* Admin submenu overlay */
 .is-mobile .admin-subnav{
@@ -125,30 +123,19 @@ body.is-mobile{ padding-bottom:0; }
 /* TV button hidden on mobile */
 .is-mobile #btnTV{ display:none; }
 
-/* Tickets block: no horizontal scroll */
-.is-mobile #ticketsWrap{ overflow-x:hidden; }
-.is-mobile #ticketsTable{ width:100%; min-width:0; }
-/* garantia de largura total na página de chamados */
-.is-mobile.tickets-page #sectionTickets,
-.is-mobile.tickets-page #sectionTickets .table-wrap,
-.is-mobile.tickets-page #sectionTickets .table{ width:100%; }
-
-/* Detalhes de chamado/projeto sem overflow lateral */
-.is-mobile .ticket-detail,
+/* Detalhes de projeto sem overflow lateral */
 .is-mobile .project-detail-inline{
   overflow-x:hidden;
   width:100%;
 }
 
 /* Subtabs menores com rolagem horizontal */
-.is-mobile .ticket-detail .subtabs,
 .is-mobile .project-detail-inline .subtabs{
   flex-wrap: nowrap;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   gap:6px;
 }
-.is-mobile .ticket-detail .subtabs .subtab,
 .is-mobile .project-detail-inline .subtabs .subtab{
   flex:0 0 auto;
   font-size:12px;
@@ -159,8 +146,7 @@ body.is-mobile{ padding-bottom:0; }
 .is-mobile .sidebar .logo-row{ display:none; }
 .is-mobile .sidebar{ padding-top:56px; }
 
-/* Tickets & Projects pages: stable flex layout without double scroll */
-.is-mobile.tickets-page .content.panel,
+/* Projects page: stable flex layout without double scroll */
 .is-mobile.projects-page .content.panel{
   display:flex;
   flex-direction:column;
@@ -179,17 +165,3 @@ body.is-mobile{ padding-bottom:0; }
 }
 
 
-/* Refactor (fallback): manter container visível e esconder apenas partes pesadas */
-.is-mobile.tickets-page #sectionTickets{ display: block; }
-.is-mobile.tickets-page #ticketsWrap,
-.is-mobile.tickets-page #ticketsTable,
-.is-mobile.tickets-page .table-wrap,
-.is-mobile.tickets-page .ticket-detail{
-  display: none;
-}
-.is-mobile.tickets-page #sectionTicketDetail{ display:none; }
-
-
-/* Tickets summary block visível na aba Chamados (mobile) */
-.is-mobile.tickets-page #ticketsSummaryBlock{ display:block; }
-.is-mobile.tickets-page .tickets-summary{ display:block !important; }

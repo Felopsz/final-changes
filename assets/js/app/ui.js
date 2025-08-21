@@ -72,6 +72,9 @@
       _subtabsBound: false,
     };
 
+    // Mantém os elementos de chamados no mobile para reutilizar a mesma
+    // estrutura da aba "Visão geral" na aba "Chamados".
+
     const adminMenu = els.adminMenu;
     let adminMenuOpen = APP.state.adminMenuOpen;
     adminMenuOpen = adminMenu?.classList.contains('open') || adminMenuOpen;
@@ -149,6 +152,12 @@
           els.tabTickets?.classList.add('active');
           if (els.sectionPill) els.sectionPill.textContent = 'Chamados';
           show('#sectionTickets');
+          if (APP.state.IS_MOBILE) {
+            show('#sectionTicketDetail');
+            hide('#sectionProjects');
+            hide('#sectionCharts');
+            return;
+          }
           hide('#sectionTicketDetail');
           return;
         }
@@ -188,6 +197,7 @@
       },
 
       renderTickets(){
+        if (!els.ticketsTableBody) return;
         els.ticketsTableBody.innerHTML = '';
 
         // Cabeçalho dinâmico (Resumo só no modo TV)
@@ -705,10 +715,14 @@
         if (!APP.state.IS_MOBILE) this.renderSLAChart(t.concl, Math.min(p,100));
       },
 
-      openTicketDetail(t, rowEl){
-        this.selectTicket(t, rowEl);
-        this.setActiveTab('tickets');
-        show('#sectionTicketDetail');
+        openTicketDetail(t, rowEl){
+          this.selectTicket(t, rowEl);
+          this.setActiveTab('tickets');
+          if (APP.state.IS_MOBILE) {
+            document.querySelectorAll('.bottom-nav .bn-btn').forEach(b=>b.classList.remove('active'));
+            document.querySelector('.bottom-nav .bn-btn[data-tab="tickets"]')?.classList.add('active');
+          }
+          show('#sectionTicketDetail');
 
         const pctPrazo = computeDeadlinePct(t.createdAt, t.dueDate);
         const overdue = pctPrazo > 100;
@@ -1247,32 +1261,31 @@
     });
 
     if (APP.state.IS_MOBILE){
-      document.querySelectorAll('.bottom-nav .bn-btn').forEach(btn=>{
-        btn.addEventListener('click', ()=>{
-          document.querySelectorAll('.bottom-nav .bn-btn').forEach(b=>b.classList.remove('active'));
-          btn.classList.add('active');
-          const tab = btn.dataset.tab;
-          if (tab === 'overview') {
-            UI.setActiveTab('overview');
-          } else if (tab === 'tickets') {
-            UI.setActiveTab('tickets');
-            const firstTicket = DB.state.tickets?.[0];
-            const firstRow = document.querySelector('#ticketsTable tbody tr');
-            if (firstTicket && firstRow){
-              UI.openTicketDetail(firstTicket, firstRow);
-            } else {
-              const det = document.getElementById('ticketDetail');
-              if (det) det.style.display = 'none';
+        document.querySelectorAll('.bottom-nav .bn-btn').forEach(btn=>{
+          btn.addEventListener('click', ()=>{
+            document.querySelectorAll('.bottom-nav .bn-btn').forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active');
+            const tab = btn.dataset.tab;
+            if (tab === 'overview') {
+              UI.setActiveTab('overview');
+            } else if (tab === 'tickets') {
+              UI.setActiveTab('tickets');
+              const firstTicket = DB.state.tickets?.[0];
+              const firstRow = document.querySelector('#ticketsTable tbody tr');
+              if (firstTicket && firstRow){
+                UI.openTicketDetail(firstTicket, firstRow);
+              } else {
+                document.getElementById('ticketDetail')?.style.display = 'none';
+              }
+            } else if (tab === 'projects') {
+              UI.setActiveTab('projects');
+            } else if (tab === 'admin') {
+              adminMenuOpen = !adminMenuOpen;
+              APP.state.adminMenuOpen = adminMenuOpen;
+              adminMenu?.classList.toggle('open', adminMenuOpen);
             }
-          } else if (tab === 'projects') {
-            UI.setActiveTab('projects');
-          } else if (tab === 'admin') {
-            adminMenuOpen = !adminMenuOpen;
-            APP.state.adminMenuOpen = adminMenuOpen;
-            adminMenu?.classList.toggle('open', adminMenuOpen);
-          }
+          });
         });
-      });
     }
 
     // Boot inicial
