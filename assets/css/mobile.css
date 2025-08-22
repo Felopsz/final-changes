@@ -150,7 +150,7 @@ body.is-mobile{ padding-bottom:0; }
 }
 .is-mobile .ticket-detail .subtabs .subtab,
 .is-mobile .project-detail-inline .subtabs .subtab{
-  flex:0 0 auto;
+  
   font-size:12px;
   padding:6px 10px;
 }
@@ -160,7 +160,7 @@ body.is-mobile{ padding-bottom:0; }
 .is-mobile .sidebar{ padding-top:56px; }
 
 /* Tickets & Projects pages: stable flex layout without double scroll */
-.is-mobile.tickets-page .content.panel,
+.is-mobile.is-mobile.tickets-page .content.panel,
 .is-mobile.projects-page .content.panel{
   display:flex;
   flex-direction:column;
@@ -184,12 +184,135 @@ body.is-mobile{ padding-bottom:0; }
 .is-mobile.tickets-page #ticketsWrap,
 .is-mobile.tickets-page #ticketsTable,
 .is-mobile.tickets-page .table-wrap,
-.is-mobile.tickets-page .ticket-detail{
-  display: none;
-}
+/* removed: do not hide ticket-detail on mobile by default */
 .is-mobile.tickets-page #sectionTicketDetail{ display:none; }
 
 
 /* Tickets summary block visível na aba Chamados (mobile) */
-.is-mobile.tickets-page #ticketsSummaryBlock{ display:block; }
+.is-mobile.tickets-page #ticketsSummaryBlock{
+  display:block;
+  max-height:40vh;          /* igual visão geral */
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding: var(--space-3);  /* padding solicitado */
+  box-sizing: border-box;
+}
 .is-mobile.tickets-page .tickets-summary{ display:block !important; }
+
+/* === MOBILE PATCH v7: FORCE full-width detail panel on mobile === */
+.is-mobile.tickets-page .content.panel{ display:flex; flex-direction:column; align-items:stretch !important; }
+
+/* override any generic .panel width like width:min(96vw,900px) */
+.is-mobile.tickets-page #sectionTicketDetail .ticket-detail.panel{
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  box-sizing: border-box;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  align-self: stretch !important;
+}
+
+/* also ensure the #sectionTicketDetail section itself stretches */
+.is-mobile.tickets-page #sectionTicketDetail{
+  width: 100% !important;
+  max-width: 100% !important;
+  align-self: stretch !important;
+}
+
+
+/* Mobile Tickets: detalhe com padding, rolagem própria e ocupando o resto */
+.is-mobile.tickets-page #sectionTicketDetail.section{ margin-top: var(--space-3); }
+.is-mobile #sectionTicketDetail{ display:none; }
+.is-mobile.show-detail #sectionTicketDetail{ display:block; }
+
+.is-mobile.tickets-page .content.panel{
+  display:flex; flex-direction:column; align-items:stretch;
+}
+
+.is-mobile.tickets-page #sectionTicketDetail,
+.is-mobile.tickets-page #sectionTicketDetail .ticket-detail{
+  width:100%; max-width:100%; min-width:0; box-sizing:border-box; align-self:stretch;
+}
+
+.is-mobile.tickets-page #sectionTicketDetail .ticket-detail{
+  padding: var(--space-3);
+  min-height: 40vh;
+  max-height: calc(100dvh -  var(--space-6) - 40vh);
+  overflow-y:auto;
+}
+
+
+/* Chamados (mobile): detalhes logo abaixo do resumo, com respiro e preenchimento */
+.is-mobile.tickets-page .content.panel{
+  display:flex;
+  flex-direction:column;
+  align-items:stretch;
+}
+
+.is-mobile.tickets-page #sectionTicketDetail.section{
+  margin-top: var(--space-3); /* espaço entre resumo e detalhe */
+}
+
+/* Detalhe ocupa o resto do espaço, com rolagem própria */
+.is-mobile.tickets-page #sectionTicketDetail{
+  flex: 1 1 auto;
+  min-height: 40vh;           /* espaço mínimo */
+}
+
+.is-mobile.tickets-page #sectionTicketDetail .ticket-detail{
+  padding: var(--space-3);    /* padding interno do card de detalhe */
+  box-sizing: border-box;
+  max-height: calc(100dvh - 40vh - var(--space-6)); /* resto da tela abaixo do resumo */
+  overflow-y: auto;           /* rolagem própria */
+}
+
+.is-mobile.show-detail #sectionTicketDetail .ticket-detail{display:block;}
+/* Espaço entre o resumo e o detalhe (mobile) */
+.is-mobile.tickets-page #ticketsSummaryBlock{
+  margin-bottom: var(--space-3);
+}
+
+
+/* ======================================================================
+   MOBILE: Estado 'tickets-detail-only' (aplica apenas ao card de Detalhes)
+   ----------------------------------------------------------------------
+   - Evita ativar todo o layout de .tickets-page no mobile
+   - Esconde lista/resumo e mostra apenas o #sectionTicketDetail
+   - Reaproveita ajustes de largura/scroll do patch v7 para o detalhe
+   ====================================================================== */
+.is-mobile.tickets-detail-only #ticketsSummaryBlock,
+.is-mobile.tickets-detail-only #sectionTickets,
+.is-mobile.tickets-detail-only #ticketsWrap,
+.is-mobile.tickets-detail-only #ticketsTable,
+.is-mobile.tickets-detail-only .table-wrap{
+  display: none !important;
+}
+.is-mobile.tickets-detail-only #sectionTicketDetail{ display:block !important; }
+.is-mobile.tickets-detail-only .content.panel{
+  display:flex; flex-direction:column; align-items:stretch !important;
+  overflow:hidden;
+}
+.is-mobile.tickets-detail-only #sectionTicketDetail,
+.is-mobile.tickets-detail-only #sectionTicketDetail .ticket-detail{
+  width:100%; max-width:100%; min-width:0; box-sizing:border-box; align-self:stretch;
+}
+.is-mobile.tickets-detail-only #sectionTicketDetail .ticket-detail.panel{
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  box-sizing: border-box;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  align-self: stretch !important;
+  padding: var(--space-3);
+  overflow-y: auto;
+}
+.is-mobile.tickets-detail-only #sectionTicketDetail.section{
+  margin-top: var(--space-3);
+  flex: 1 1 auto;
+  min-height: 40vh;
+}
+/* Mantém comportamento de mostrar detalhe quando body tem .show-detail */
+.is-mobile.show-detail.tickets-detail-only #sectionTicketDetail{ display:block !important; }
+
