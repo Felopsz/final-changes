@@ -147,7 +147,9 @@
       "descricao": "Homologação final do link com validação de performance.",
       "notes": [],
       "obs": {}
-    },
+    }
+  },
+  "archivedTickets": {
     "RITM4113332": {
       "createdAt": "2025-08-05T12:36",
       "solicitante": "Walter Freitas Goncalves",
@@ -165,10 +167,10 @@
           "autor": "admin",
           "criadoEm": "2025-08-15T15:41:30.907Z"
         }
-      ]
+      ],
+      "notes": []
     }
   },
-  "archivedTickets": {},
   "finishedTickets": {},
   "projects": {
     "PR-2001": {
