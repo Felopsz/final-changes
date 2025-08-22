@@ -125,17 +125,21 @@
         setPageState('default');
         adminMenu?.classList.toggle('open', adminMenuOpen);
 
-        document.body.classList.remove('tickets-page','projects-page','tickets-detail-only');
-if (which === 'tickets') {
-  if (APP.state.IS_MOBILE) {
-    document.body.classList.add('tickets-detail-only');
-  } else {
-    document.body.classList.add('tickets-page');
-  }
-}
-if (which === 'projects') {
-  if (!APP.state.IS_MOBILE) document.body.classList.add('projects-page');
-}
+        document.body.classList.remove('tickets-page','projects-page','tickets-detail-only','projects-detail-only');
+        if (which === 'tickets') {
+          if (APP.state.IS_MOBILE) {
+            document.body.classList.add('tickets-detail-only');
+          } else {
+            document.body.classList.add('tickets-page');
+          }
+        }
+        if (which === 'projects') {
+          if (APP.state.IS_MOBILE) {
+            document.body.classList.add('projects-detail-only');
+          } else {
+            document.body.classList.add('projects-page');
+          }
+        }
 
         if(which !== 'overview' && els.projDetailsInline){
           els.projDetailsInline.innerHTML = '';
@@ -165,7 +169,15 @@ if (which === 'projects') {
           els.tabProjects?.classList.add('active');
           if (els.sectionPill) els.sectionPill.textContent = 'Projetos';
           clearTicketDetail(els);
-          if (APP.state.IS_MOBILE) return; // no mobile mantém vazia
+          if (APP.state.IS_MOBILE) {
+            this.renderProjects();
+            const firstProj = DB.state.projects?.[0];
+            if (firstProj) {
+              show('#sectionProjectDetail');
+              this.openProjectDetailInline(firstProj);
+            }
+            return;
+          }
           show('#sectionProjects');
           show('#sectionProjectDetail');
           this.renderProjects();
@@ -1035,7 +1047,7 @@ if (which === 'projects') {
         setTimeout(()=> UI.updateProjectArrows(), 300);
       },
       openProjectDetailInline(p){
-        if (!document.body.classList.contains('projects-page')) {
+        if (!document.body.classList.contains('projects-page') && !APP.state.IS_MOBILE) {
           UI.setActiveTab('projects');
         }
         const rdos = DB.state.rdosByProject[p.id] || [];

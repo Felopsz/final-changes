@@ -316,3 +316,28 @@ body.is-mobile{ padding-bottom:0; }
 /* Mantém comportamento de mostrar detalhe quando body tem .show-detail */
 .is-mobile.show-detail.tickets-detail-only #sectionTicketDetail{ display:block !important; }
 
+
+/* ======================================================================
+   MOBILE: Estado 'projects-detail-only' (aplica apenas ao card de Detalhes)
+   ----------------------------------------------------------------------
+   - Esconde a lista de projetos e mostra somente o detalhe
+   - Ajusta largura e rolagem do painel de detalhe
+   ====================================================================== */
+.is-mobile.projects-detail-only #sectionProjects { display:none !important; }
+.is-mobile.projects-detail-only #sectionProjectDetail { display:block !important; }
+
+.is-mobile.projects-detail-only .content.panel {
+  display:flex;
+  flex-direction:column;
+  align-items:stretch !important;
+  overflow:hidden;
+}
+
+.is-mobile.projects-detail-only #sectionProjectDetail .project-detail-inline.panel {
+  width:100% !important;
+  max-width:none !important;
+  min-width:0 !important;
+  margin:0 !important;
+  padding:var(--space-3);
+  overflow-y:auto;
+}
