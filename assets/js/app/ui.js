@@ -125,9 +125,17 @@
         setPageState('default');
         adminMenu?.classList.toggle('open', adminMenuOpen);
 
-        document.body.classList.remove('tickets-page','projects-page');
-        if (which === 'tickets' && !APP.state.IS_MOBILE)  document.body.classList.add('tickets-page');
-        if (which === 'projects' && !APP.state.IS_MOBILE) document.body.classList.add('projects-page');
+        document.body.classList.remove('tickets-page','projects-page','tickets-detail-only');
+if (which === 'tickets') {
+  if (APP.state.IS_MOBILE) {
+    document.body.classList.add('tickets-detail-only');
+  } else {
+    document.body.classList.add('tickets-page');
+  }
+}
+if (which === 'projects') {
+  if (!APP.state.IS_MOBILE) document.body.classList.add('projects-page');
+}
 
         if(which !== 'overview' && els.projDetailsInline){
           els.projDetailsInline.innerHTML = '';
@@ -709,6 +717,8 @@
         this.selectTicket(t, rowEl);
         this.setActiveTab('tickets');
         show('#sectionTicketDetail');
+        document.body.classList.add('show-detail'); // libera o painel de detalhes no mobile
+
 
         const pctPrazo = computeDeadlinePct(t.createdAt, t.dueDate);
         const overdue = pctPrazo > 100;
