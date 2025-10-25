@@ -247,6 +247,36 @@
           });
           els.ticketsTableBody.appendChild(tr);
         });
+        if (APP.state.IS_MOBILE) this.renderTicketsSummaryMobile();
+      },
+
+      // -- Tickets summary block (mobile) ------------------------------------
+      renderTicketsSummaryMobile(){
+        const wrap = document.getElementById('ticketsSummaryBlock');
+        const scroller = wrap?.querySelector('.ts-scroll');
+        const list = scroller?.querySelector('.tickets-summary');
+        if(!wrap || !scroller || !list) return;
+        list.innerHTML = '';
+        scroller.scrollTop = 0; // garante início no topo
+        DB.state.tickets.forEach(t=>{
+          const created = parseDateLocal(t.createdAt).toLocaleString('pt-BR');
+          const card = document.createElement('li');
+          card.className = 'ticket-summary panel mb-3';
+          card.innerHTML = `
+            <div class="ts-item" data-label="ID do chamado">
+              <button class="linklike" data-id="${t.id}">${t.id}</button>
+            </div>
+            <div class="ts-item" data-label="Data de criação">${created}</div>
+            <div class="ts-item" data-label="Ponto de encontro">${esc(t.meetPoint)}</div>
+            <div class="ts-item" data-label="Dupla">${esc(t.dupla)}</div>
+          `;
+          card.addEventListener('click', () => {
+            const tr = document.querySelector(`#ticketsTable tbody tr button[data-id="${t.id}"]`)?.closest('tr');
+            this.openTicketDetail(t, tr);
+            this.selectTicket(t, tr);
+          });
+          list.appendChild(card);
+        });
       },
 
       // Renderiza o carrossel de projetos onde for visível (visão geral e aba Projetos no desktop)
